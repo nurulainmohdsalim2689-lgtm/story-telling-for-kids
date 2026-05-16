@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>✨ Magic Bookshelf | Storybook Reader for Kids</title>
+    <title>🐼🐿️ Best Friends: Panda & Squirrel | Storybook World</title>
     <style>
         * {
             margin: 0;
@@ -13,8 +13,8 @@
         }
 
         body {
-            background: linear-gradient(145deg, #f9f3e6 0%, #fff0df 100%);
-            color: #2e241f;
+            background: linear-gradient(145deg, #f0f7e8 0%, #e8f0de 100%);
+            color: #2e3b1f;
             padding: 1.5rem;
             min-height: 100vh;
         }
@@ -32,7 +32,7 @@
 
         .header h1 {
             font-size: 2.5rem;
-            background: linear-gradient(135deg, #b45f2b, #e2a05b);
+            background: linear-gradient(135deg, #4a7c2b, #8bc34a);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
@@ -40,7 +40,7 @@
         }
 
         .header p {
-            color: #5e3a2b;
+            color: #5a6e3b;
             font-weight: 500;
         }
 
@@ -53,7 +53,7 @@
         }
 
         .tab-btn {
-            background: #faeedc;
+            background: #faf5e6;
             border: none;
             padding: 0.75rem 1.8rem;
             font-size: 1.1rem;
@@ -61,14 +61,14 @@
             border-radius: 60px;
             cursor: pointer;
             transition: 0.2s;
-            color: #6b3e1c;
+            color: #4a6e2c;
             box-shadow: 0 4px 8px rgba(0,0,0,0.05);
         }
 
         .tab-btn.active {
-            background: #ffb882;
+            background: #8bc34a;
             color: white;
-            box-shadow: 0 8px 18px rgba(255,140,60,0.3);
+            box-shadow: 0 8px 18px rgba(100,150,50,0.3);
         }
 
         .tab-pane {
@@ -99,7 +99,7 @@
             padding: 1.2rem;
             box-shadow: 0 12px 24px rgba(0,0,0,0.08);
             transition: transform 0.2s, box-shadow 0.2s;
-            border: 1px solid #ffe1b9;
+            border: 1px solid #e2f0ce;
         }
 
         .book-card:hover {
@@ -110,40 +110,40 @@
         .book-title {
             font-size: 1.4rem;
             font-weight: 800;
-            color: #a3521a;
+            color: #5a852b;
             margin-bottom: 0.5rem;
         }
 
         .book-purpose {
             display: inline-block;
-            background: #ffecd6;
+            background: #f0f7e2;
             padding: 0.2rem 0.8rem;
             border-radius: 30px;
             font-size: 0.75rem;
             font-weight: bold;
             margin-bottom: 0.8rem;
-            color: #a55724;
+            color: #6a8a3a;
         }
 
         .book-content {
             font-size: 0.9rem;
             line-height: 1.4;
-            color: #4a3729;
+            color: #3a4a2a;
             max-height: 100px;
             overflow-y: auto;
             margin: 12px 0;
-            background: #fef6ed;
+            background: #fefdf5;
             padding: 8px 12px;
             border-radius: 20px;
         }
 
         .read-btn {
-            background: #f5bc7a;
+            background: #9bcd5c;
             border: none;
             padding: 10px 14px;
             border-radius: 40px;
             font-weight: bold;
-            color: #2d1b10;
+            color: #2d3a1a;
             cursor: pointer;
             margin-top: 8px;
             width: 100%;
@@ -152,13 +152,13 @@
         }
 
         .read-btn:hover {
-            background: #ed9b4a;
+            background: #7cb342;
             color: white;
             transform: scale(0.98);
         }
 
         .delete-btn {
-            background: #f0cfb0;
+            background: #e9e0c7;
             border: none;
             padding: 6px 12px;
             border-radius: 40px;
@@ -171,7 +171,7 @@
 
         /* form */
         .form-panel {
-            background: #fff8ef;
+            background: #fefcf5;
             border-radius: 48px;
             padding: 1.8rem;
             margin-top: 1rem;
@@ -191,7 +191,7 @@
         input, select, textarea {
             width: 100%;
             padding: 12px 16px;
-            border: 2px solid #ffddb0;
+            border: 2px solid #dcedbc;
             border-radius: 60px;
             font-size: 1rem;
             background: white;
@@ -203,7 +203,7 @@
         }
 
         button.submit {
-            background: #b9632c;
+            background: #7cb342;
             color: white;
             border: none;
             padding: 12px 28px;
@@ -215,19 +215,19 @@
         }
 
         button.submit:hover {
-            background: #9a4a1a;
+            background: #5a8f2c;
             transform: scale(0.98);
         }
 
-        /* ========== STORYBOOK READER MODAL (KIDS FRIENDLY PAGES) ========== */
+        /* ========== STORYBOOK READER MODAL (Panda & Squirrel Theme) ========== */
         .story-reader-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(5px);
+            background: rgba(0, 0, 0, 0.88);
+            backdrop-filter: blur(6px);
             z-index: 2000;
             display: flex;
             align-items: center;
@@ -237,9 +237,9 @@
         }
 
         .story-reader-book {
-            background: #fef3e2;
+            background: #fffef0;
             width: 100%;
-            max-width: 800px;
+            max-width: 880px;
             border-radius: 56px;
             box-shadow: 0 30px 50px rgba(0,0,0,0.4), inset 0 1px 4px rgba(255,255,200,0.8);
             overflow: hidden;
@@ -248,49 +248,49 @@
         }
 
         @keyframes bookPop {
-            from { transform: scale(0.9); opacity: 0; }
+            from { transform: scale(0.92); opacity: 0; }
             to { transform: scale(1); opacity: 1; }
         }
 
         .story-header-bar {
-            background: #ffd5a4;
-            padding: 15px 25px;
+            background: #c8e6a5;
+            padding: 15px 28px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 4px solid #ffbc7a;
+            border-bottom: 5px solid #a5d66b;
         }
 
         .story-header-bar h3 {
-            font-size: 1.5rem;
-            color: #793d18;
+            font-size: 1.6rem;
+            color: #3c5a1c;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
         }
 
         .close-story-btn {
-            background: #fff0e0;
+            background: #fff6e0;
             border: none;
-            font-size: 1.5rem;
-            width: 40px;
-            height: 40px;
+            font-size: 1.6rem;
+            width: 44px;
+            height: 44px;
             border-radius: 50%;
             cursor: pointer;
             font-weight: bold;
-            color: #b45f2b;
+            color: #7cb342;
             transition: 0.2s;
         }
 
         .close-story-btn:hover {
-            background: #ffbc7a;
-            color: white;
+            background: #d4e6b0;
+            color: #3b5c1a;
             transform: rotate(90deg);
         }
 
         .story-page-container {
-            padding: 30px 28px;
-            min-height: 450px;
+            padding: 32px 32px;
+            min-height: 520px;
             display: flex;
             flex-direction: column;
             background: #fffaf0;
@@ -298,22 +298,22 @@
 
         .story-page-illustration {
             text-align: center;
-            font-size: 5rem;
-            background: #fff2e2;
-            border-radius: 60px;
+            font-size: 6rem;
+            background: #fef7e8;
+            border-radius: 80px;
             padding: 1.2rem;
-            margin-bottom: 1.5rem;
-            box-shadow: inset 0 0 0 3px white, 0 6px 12px rgba(0,0,0,0.05);
+            margin-bottom: 1.8rem;
+            box-shadow: inset 0 0 0 4px white, 0 8px 18px rgba(0,0,0,0.05);
         }
 
         .story-page-text {
-            font-size: 1.25rem;
-            line-height: 1.6;
+            font-size: 1.3rem;
+            line-height: 1.65;
             font-family: 'Georgia', 'Times New Roman', serif;
-            color: #2f241b;
-            background: #ffffffdb;
-            padding: 20px;
-            border-radius: 40px;
+            color: #2f3a1f;
+            background: #ffffffdd;
+            padding: 24px;
+            border-radius: 48px;
             margin-bottom: 1rem;
             flex-grow: 1;
         }
@@ -323,44 +323,46 @@
             justify-content: space-between;
             align-items: center;
             margin-top: 20px;
-            gap: 12px;
+            gap: 15px;
             flex-wrap: wrap;
         }
 
         .nav-btn {
-            background: #e7b77c;
+            background: #aed581;
             border: none;
-            padding: 12px 24px;
+            padding: 12px 28px;
             border-radius: 60px;
             font-weight: bold;
-            font-size: 1rem;
-            color: white;
+            font-size: 1.1rem;
+            color: #2d4515;
             cursor: pointer;
             transition: 0.2s;
             box-shadow: 0 3px 6px rgba(0,0,0,0.1);
         }
 
         .nav-btn:disabled {
-            background: #cfaa7a;
-            opacity: 0.5;
+            background: #cfdeb9;
+            opacity: 0.6;
             cursor: not-allowed;
         }
 
         .nav-btn:hover:not(:disabled) {
-            background: #c27e42;
+            background: #8bc34a;
+            color: white;
             transform: translateY(-2px);
         }
 
         .page-indicator {
-            background: #ffebd2;
-            padding: 8px 18px;
-            border-radius: 40px;
+            background: #eaf4db;
+            padding: 10px 24px;
+            border-radius: 60px;
             font-weight: bold;
-            color: #a3521a;
+            color: #5a852b;
+            font-size: 1rem;
         }
 
         .badge {
-            background: #f3cf9b;
+            background: #dcedbc;
             display: inline-block;
             padding: 0.2rem 1rem;
             border-radius: 50px;
@@ -374,9 +376,10 @@
             font-size: 0.8rem;
         }
 
-        @media (max-width: 600px) {
-            .story-page-text { font-size: 1rem; }
-            .story-page-illustration { font-size: 3rem; }
+        @media (max-width: 650px) {
+            .story-page-text { font-size: 1rem; padding: 16px; }
+            .story-page-illustration { font-size: 4rem; }
+            .story-header-bar h3 { font-size: 1.2rem; }
             .story-page-container { padding: 20px; }
         }
     </style>
@@ -384,61 +387,60 @@
 <body>
 <div class="app-container">
     <div class="header">
-        <h1>📚 Magical Bookshelf</h1>
-        <p>✨ study • read • collect • imagine ✨</p>
+        <h1>🐼🐿️ Best Friends BookLand</h1>
+        <p>✨ Read • Collect • Imagine with Panda & Squirrel ✨</p>
     </div>
 
     <div class="tabs">
-        <button class="tab-btn active" data-tab="collection">📖 Book Collection</button>
+        <button class="tab-btn" data-tab="collection">📚 Book Collection</button>
         <button class="tab-btn" data-tab="insert">➕ Insert New Book</button>
-        <button class="tab-btn" data-tab="story">🎨 Interactive StoryBook for Kids</button>
+        <button class="tab-btn active" data-tab="story">📖 Panda & Squirrel Story (10 pages)</button>
     </div>
 
-    <!-- TAB 1: Book Collection (see, read with storybook reader) -->
-    <div id="collectionPane" class="tab-pane active-pane">
+    <!-- TAB 1: Book Collection (other books) -->
+    <div id="collectionPane" class="tab-pane">
         <div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; margin-bottom: 1rem;">
             <h2>📚 Your Library <span class="badge" id="bookCountBadge">0 books</span></h2>
-            <div><input type="text" id="searchInput" placeholder="🔍 search by title or purpose..." style="width: 220px;"></div>
+            <div><input type="text" id="searchInput" placeholder="🔍 search by title..." style="width: 220px;"></div>
         </div>
         <div id="booksGrid" class="grid-books"></div>
-        <div id="noBooksMsg" style="text-align:center; padding: 3rem; background: #fff0e0; border-radius: 48px; margin-top:1rem;">✨ No books yet. Go to "Insert New Book" to add your first book! ✨</div>
+        <div id="noBooksMsg" style="text-align:center; padding: 3rem; background: #faf5e6; border-radius: 48px;">✨ Add your own books or enjoy the main story! ✨</div>
     </div>
 
-    <!-- TAB 2: Insert new book (study/general) -->
+    <!-- TAB 2: Insert New Book -->
     <div id="insertPane" class="tab-pane">
         <div class="form-panel">
-            <h2>📝 Add a new book to the shelf</h2>
+            <h2>➕ Write Your Own Story</h2>
             <form id="bookForm">
                 <div class="form-group">
-                    <label>📕 Book Title *</label>
-                    <input type="text" id="title" placeholder="e.g. 'The Curious Fox'" required>
+                    <label>📘 Book Title</label>
+                    <input type="text" id="title" placeholder="e.g. 'Panda's Bamboo Adventure'" required>
                 </div>
                 <div class="form-group">
-                    <label>🎯 Purpose (Study / General)</label>
+                    <label>🎯 Purpose</label>
                     <select id="purpose">
                         <option value="Study">📘 Study</option>
                         <option value="General">📖 General / Story</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>📄 Story Content (For kids reader: Write the whole story. It will be split into beautiful pages!)</label>
-                    <textarea rows="5" id="content" placeholder="Write your story here. It will be automatically divided into pages with fun illustrations based on keywords! Example: Once upon a time..."></textarea>
+                    <label>📄 Story Content</label>
+                    <textarea rows="5" id="content" placeholder="Write your story here. It will be turned into a page-by-page storybook!"></textarea>
                 </div>
-                <button type="submit" class="submit">➕ Add Book to Collection</button>
+                <button type="submit" class="submit">✨ Publish & Add to Library</button>
             </form>
-            <p style="margin-top: 16px; font-size:0.85rem;">💡 Tip: Long stories will be paginated! When you click "Read Full Book", a colorful kids' storybook opens with previous/next pages.</p>
         </div>
     </div>
 
-    <!-- TAB 3: Extra Interactive StoryBook (Standalone Fun Tale) -->
-    <div id="storyPane" class="tab-pane">
-        <div class="form-panel" style="text-align: center;">
-            <h2>🎈 Read a Magical Tale: "The Little Star Who Lost Her Sparkle"</h2>
-            <p style="margin: 1rem 0;">A heartwarming 8-page story with lovely illustrations. Perfect for bedtime!</p>
-            <button id="openClassicStoryBtn" style="background:#e7a455; padding:14px 30px; border-radius:60px; border:none; color:white; font-weight:bold; font-size:1.1rem; cursor:pointer;">🌟 Read Classic Story 🌟</button>
+    <!-- TAB 3: Main Panda & Squirrel Story (10 pages, longer per page) -->
+    <div id="storyPane" class="tab-pane active-pane">
+        <div class="form-panel" style="text-align: center; background: #eef5e2;">
+            <h2>🐼🐿️ "The Greatest Friendship: Panda & Squirrel"</h2>
+            <p style="margin: 1rem 0 2rem;">A heartwarming 10-page story about two best friends who learn that kindness, courage, and teamwork make every adventure magical.</p>
+            <button id="openPandaSquirrelStory" style="background:#8bc34a; padding:16px 36px; border-radius:60px; border:none; color:white; font-weight:bold; font-size:1.3rem; cursor:pointer; box-shadow:0 8px 16px rgba(0,0,0,0.1);">📖 Read the Full Story (10 Pages) 📖</button>
         </div>
     </div>
-    <footer>🌸 Create, Read & Imagine — click "Read Full Book" to open a magical page-by-page storybook for kids.</footer>
+    <footer>🌸 Panda & Squirrel — best friends forever. Click the button to open the colorful storybook!</footer>
 </div>
 
 <script>
@@ -450,12 +452,10 @@
         if (stored) {
             booksArray = JSON.parse(stored);
         } else {
-            // sample books with rich story content for kids reader
             booksArray = [
-                { id: "b1", title: "🌱 The Magic Seed", purpose: "General", content: "Lily found a tiny golden seed in her garden. She planted it with love. The next morning, a giant sunflower reached the clouds! On top lived a friendly bee who gave her a jar of starlight honey. Lily shared the honey with her whole village, and everyone smiled brighter than the sun." },
-                { id: "b2", title: "🐢 Tuck and the Whispering Shell", purpose: "General", content: "Tuck the turtle discovered a magical shell that whispered secrets of the ocean. Together with his friend sea star, they sailed to coral castle and met the mermaid queen. She gave Tuck a pearl of courage. From that day, Tuck was never afraid to explore the deep blue sea." },
-                { id: "b3", title: "🧮 Math Forest Adventure", purpose: "Study", content: "Join the number elves in the Math Forest. Solve fun puzzles: if 3 acorns plus 5 acorns make 8, you earn a glittering badge. This story makes math exciting and helps kids practice counting with colorful animal friends." },
-                { id: "b4", title: "🌈 The Colorful Dragon", purpose: "General", content: "Drizzle the dragon had rainbow scales but couldn't fly. With help from a butterfly and a little girl, he discovered that believing in yourself is the real magic. He soared across the sky painting rainbows. A wonderful tale about self-confidence." }
+                { id: "b1", title: "🌱 The Little Bamboo", purpose: "General", content: "A panda cub finds a magical bamboo that grows taller than clouds. With squirrel's help, they discover a secret garden." },
+                { id: "b2", title: "🐿️ Acorn Kingdom", purpose: "General", content: "Squirrel dreams of building a castle with golden acorns. Panda helps gather them, and they become royal builders!" },
+                { id: "b3", title: "📚 Forest Math", purpose: "Study", content: "Count nuts and leaves with Panda & Squirrel — fun math puzzles in the woods." }
             ];
             saveBooksToStorage();
         }
@@ -467,7 +467,7 @@
         updateBookCountBadge();
     }
 
-    function generateId() { return Date.now() + '-' + Math.random().toString(36).substr(2, 6); }
+    function generateId() { return Date.now() + '-' + Math.random().toString(36).substr(2, 8); }
 
     function addBook(title, purpose, content) {
         if (!title.trim()) return false;
@@ -475,7 +475,7 @@
             id: generateId(),
             title: title.trim(),
             purpose: purpose,
-            content: content.trim() || "Once upon a time, there was a wonderful story waiting to be read..."
+            content: content.trim() || "Once upon a time in the forest..."
         });
         saveBooksToStorage();
         updateBookUI();
@@ -503,63 +503,19 @@
         });
     }
 
-    // --- MAGICAL STORYBOOK READER (pages from any book content) ---
-    // This function takes a book title and full story text, splits into kid-friendly pages
-    // and displays a beautiful interactive storybook with emoji illustrations based on content.
-    function openStorybookReader(title, fullStory) {
-        // Split story into pages: we'll break by sentences or paragraphs to create ~150-250 char per page for kids
-        let pages = [];
-        // First, split by double newline for paragraphs, then by sentences for better reading
-        let paragraphs = fullStory.split(/\n\s*\n/);
-        if (paragraphs.length === 0) paragraphs = [fullStory];
-        
-        for (let para of paragraphs) {
-            if (para.trim().length === 0) continue;
-            // further split long paragraphs into smaller chunks (ideal for kids)
-            let sentences = para.split(/(?<=[.!?])\s+/);
-            let currentChunk = "";
-            for (let sent of sentences) {
-                if ((currentChunk + sent).length < 200 && currentChunk.split(' ').length < 35) {
-                    currentChunk += (currentChunk ? " " : "") + sent;
-                } else {
-                    if (currentChunk) pages.push(currentChunk.trim());
-                    currentChunk = sent;
-                }
-            }
-            if (currentChunk) pages.push(currentChunk.trim());
-        }
-        // If pages is empty (very short story), add whole content
-        if (pages.length === 0 && fullStory.trim().length > 0) pages = [fullStory];
-        if (pages.length === 0) pages = ["Once upon a time, a wonderful story begins..."];
-        
-        // Assign playful illustrations based on keywords (to make it attractive for kids)
-        function getIllustrationForPage(text) {
-            const lower = text.toLowerCase();
-            if (lower.includes('dragon')) return '🐉🔥✨';
-            if (lower.includes('magic') || lower.includes('spark')) return '✨🔮⭐';
-            if (lower.includes('forest') || lower.includes('tree')) return '🌲🌳🍄🐿️';
-            if (lower.includes('ocean') || lower.includes('sea') || lower.includes('turtle')) return '🐢🌊🐠🐚';
-            if (lower.includes('rainbow')) return '🌈🌟☁️';
-            if (lower.includes('star')) return '⭐🌟🌙✨';
-            if (lower.includes('flower') || lower.includes('seed')) return '🌻🌸🌱🍯';
-            if (lower.includes('fox') || lower.includes('animal')) return '🦊🐇🐿️🌿';
-            if (lower.includes('math') || lower.includes('count')) return '🔢🧸📚✨';
-            return '📖🌈🌟';
-        }
-        
+    // ========== CORE: STORYBOOK READER (generic, used for Panda Story) ==========
+    function openStorybookReader(title, pagesArray, customIllustrations = null) {
         let currentPage = 0;
-        const totalPages = pages.length;
+        const totalPages = pagesArray.length;
         
-        // Create overlay & modal
         const overlay = document.createElement('div');
         overlay.className = 'story-reader-overlay';
         const bookDiv = document.createElement('div');
         bookDiv.className = 'story-reader-book';
         
-        // header
         const header = document.createElement('div');
         header.className = 'story-header-bar';
-        header.innerHTML = `<h3>📘 ${escapeHtml(title)} <span style="font-size:0.9rem;">✨ Storybook</span></h3><button class="close-story-btn">✕</button>`;
+        header.innerHTML = `<h3>📖 ${escapeHtml(title)} <span style="font-size:0.9rem;">✨ storybook</span></h3><button class="close-story-btn">✕</button>`;
         
         const pageContainer = document.createElement('div');
         pageContainer.className = 'story-page-container';
@@ -592,10 +548,34 @@
         overlay.appendChild(bookDiv);
         document.body.appendChild(overlay);
         
+        function getIllustration(index, text) {
+            if (customIllustrations && customIllustrations[index]) return customIllustrations[index];
+            const lower = text.toLowerCase();
+            if (lower.includes('panda')) return '🐼🎋✨';
+            if (lower.includes('squirrel')) return '🐿️🌰🍂';
+            if (lower.includes('acorn')) return '🌰🐿️🍂';
+            if (lower.includes('bamboo')) return '🎋🐼💚';
+            if (lower.includes('river') || lower.includes('stream')) return '🌊🐟🌈';
+            if (lower.includes('tree') || lower.includes('forest')) return '🌳🌲🐾';
+            if (lower.includes('star') || lower.includes('night')) return '⭐🌙✨';
+            if (lower.includes('friend')) return '🐼🐿️💖';
+            if (lower.includes('together')) return '🤝🐼🐿️🌈';
+            return '🐼🐿️📖🌟';
+        }
+        
         function updatePage() {
-            const pageText = pages[currentPage];
+            const pageData = pagesArray[currentPage];
+            const pageText = typeof pageData === 'string' ? pageData : pageData.text;
             textDiv.innerText = pageText;
-            illustrationDiv.innerHTML = getIllustrationForPage(pageText);
+            let illustration = '';
+            if (customIllustrations && customIllustrations[currentPage]) {
+                illustration = customIllustrations[currentPage];
+            } else if (typeof pageData === 'object' && pageData.illustration) {
+                illustration = pageData.illustration;
+            } else {
+                illustration = getIllustration(currentPage, pageText);
+            }
+            illustrationDiv.innerHTML = illustration;
             pageIndicator.innerText = `Page ${currentPage+1} of ${totalPages}`;
             prevBtn.disabled = (currentPage === 0);
             nextBtn.disabled = (currentPage === totalPages-1);
@@ -606,17 +586,18 @@
                 currentPage++;
                 updatePage();
             } else {
-                // sweet completion effect
-                alert("🎉 You finished the story! Close to read another book. 🎉");
+                const finishMsg = document.createElement('div');
+                finishMsg.textContent = '🎉 The End! What a wonderful friendship! 🎉';
+                finishMsg.style.position = 'fixed'; finishMsg.style.bottom = '30px'; finishMsg.style.left = '50%';
+                finishMsg.style.transform = 'translateX(-50%)'; finishMsg.style.background = '#ffecb3';
+                finishMsg.style.padding = '12px 24px'; finishMsg.style.borderRadius = '60px'; finishMsg.style.fontWeight = 'bold';
+                finishMsg.style.zIndex = '2100'; finishMsg.style.boxShadow = '0 4px 12px rgba(0,0,0,0.2)';
+                document.body.appendChild(finishMsg);
+                setTimeout(() => finishMsg.remove(), 3000);
             }
         }
         
-        function prevPage() {
-            if (currentPage > 0) {
-                currentPage--;
-                updatePage();
-            }
-        }
+        function prevPage() { if (currentPage > 0) { currentPage--; updatePage(); } }
         
         prevBtn.addEventListener('click', prevPage);
         nextBtn.addEventListener('click', nextPage);
@@ -626,30 +607,54 @@
         updatePage();
     }
     
-    // --- classic tale (The Little Star) with 8 beautiful pages for Tab 3 ---
-    function openClassicStory() {
-        const classicTitle = "⭐ The Little Star Who Lost Her Sparkle ⭐";
-        const classicFullStory = "Twinkle was a little star who lived in the Night Sky Village. She loved to shimmer and dance. But one evening, her sparkle suddenly faded. 'Oh no, I've lost my glow!' she cried. Her friend Luna the Moon suggested, 'Maybe you need a visit to the Kindness Comet.' Twinkle travelled across the Milky Way. She met a sad cloud who had lost his rain. Twinkle said, 'Don't worry, little cloud.' Even without her sparkle, she helped him find the silver lining. The cloud rained happy tears. Then she met a lonely astronaut floating nearby. She told him a funny joke about aliens and he laughed out loud. Suddenly, a warm feeling filled her heart — and her sparkle returned brighter than ever! The Kindness Comet appeared: 'Your sparkle comes from kindness, not magic.' Twinkle returned home and became the brightest star, teaching everyone that true light shines from within. The End.";
-        openStorybookReader(classicTitle, classicFullStory);
+    // ---------- PANDA & SQUIRREL 10-PAGE STORY (Longer per page) ----------
+    function openPandaSquirrelAdventure() {
+        const storyTitle = "🐼🐿️ Panda & Squirrel: The Secret of the Whispering Woods";
+        
+        // 10 beautifully written pages with longer text per page
+        const pages = [
+            { text: "In the heart of the Whispering Woods, where the trees hummed soft melodies and the streams sparkled like diamonds, lived two best friends: Pablo the Panda and Squeaky the Squirrel. Pablo was gentle and strong, with fluffy black-and-white fur. Squeaky was quick, clever, and always carried his favorite lucky acorn. Every morning, they met under the Great Oak Tree to share breakfast — bamboo shoots for Pablo and crunchy nuts for Squeaky. Their friendship was known throughout the forest as the strongest bond of all.", illustration: "🐼🎋🌳🐿️🌰💚" },
+            { text: "One sunny afternoon, while Squeaky was gathering acorns, he noticed something strange: a trail of glowing paw prints leading deep into the forest. 'Pablo, look!' he squeaked excitedly. Pablo leaned down and sniffed the prints. 'They smell like stardust and magic!' Curious and brave, the duo decided to follow the mysterious trail. The prints shimmered with every color of the rainbow, and the air filled with the scent of wild honey and cinnamon. 'Where could this lead?' wondered Pablo, his eyes wide with wonder.", illustration: "🐾✨🌈🐼🐿️🔍" },
+            { text: "The trail guided them across the Bouncing Bridge and past the Silent Pond, where lily pads whispered secrets to the frogs. Finally, they arrived at an ancient hollow tree with a tiny door covered in ivy. Squeaky knocked three times. The door creaked open, revealing a grand library of scrolls and glowing jars. 'Welcome, brave friends,' said an old owl named Professor Hoot. 'You have been chosen to find the legendary Friendship Gem — a jewel that keeps our forest magical. Without it, the woods will lose their sparkle in three days.'", illustration: "🦉📜🔮✨🐼🐿️" },
+            { text: "Pablo placed a gentle paw on Squeaky’s shoulder. 'We will help! That's what best friends do.' Professor Hoot handed them a map with three riddles. The first riddle read: 'I have a crown but no king, I am green but have no wings. What am I?' Squeaky thought for a moment, tapping his tiny foot. 'A tree!' he shouted. The map shimmered and revealed a path toward the Mushroom Circle. 'You are both clever and kind,' Hoot said. 'Together, you will succeed.'", illustration: "🗺️🍄🧩🐼🤝🐿️⭐" },
+            { text: "The Mushroom Circle was a magical place where mushrooms glowed like lanterns. In the center stood a stone pedestal with the second riddle: 'We are two, yet we are one; when we share, we have more fun. What are we?' Pablo and Squeaky looked at each other and smiled. 'Best friends!' they said together. Suddenly, the pedestal opened, revealing a golden compass that pointed toward the Sparkling River. 'Our friendship is the real key,' Pablo whispered. 'And it will unlock every door.'", illustration: "🍄✨🧭💛🐼🐿️🔑" },
+            { text: "Following the compass, they reached the Sparkling River, where the water sparkled like liquid stars. But the river was rushing fast, and there was no bridge. Squeaky was tiny — he couldn’t swim across. Pablo smiled. 'Climb onto my back, little friend. I’ll carry you.' Squeaky held onto Pablo’s soft fur as the panda waded carefully through the current. The river seemed to glow even brighter, as if cheering them on. 'Together, we can cross any river,' Squeaky giggled, feeling safe on his best friend’s back.", illustration: "🌊🐼💦🌟🐿️🛶💕" },
+            { text: "On the other side, they found a cave adorned with crystals. The third and final riddle was carved above the entrance: 'What grows stronger when given away? It lives in every heart.' Without hesitation, both friends shouted: 'Love! Kindness! Friendship!' The cave rumbled, and the Friendship Gem appeared — a heart-shaped crystal that hummed with warmth and light. Pablo and Squeaky held it together. In that moment, the entire forest burst into bloom with glowing flowers and singing birds. The magic was restored.", illustration: "💎💖🌸🐦✨🐼🐿️🔮" },
+            { text: "Professor Hoot arrived with a joyful hoot. 'You have proven that true friendship conquers all challenges. The gem stays with you now, for you are its guardians.' Pablo placed the gem gently inside Squeaky’s acorn pouch. 'We will share its magic with everyone we meet,' Squeaky promised. The forest animals gathered around, cheering and dancing. From that day on, the Whispering Woods became even more enchanted, because everyone knew the story of the panda and squirrel who saved it together.", illustration: "🎉🐿️🐼🐇🦊🌳💫" },
+            { text: "Back at the Great Oak Tree, Pablo and Squeaky sat watching the sunset. The sky painted orange, pink, and purple. 'You know,' Squeaky said, munching an acorn cookie, 'I never doubted us for a second.' Pablo laughed, his round belly shaking. 'Neither did I. Because with you, every adventure feels like a cozy hug.' They made a pinky promise (or paw-to-paw) to always help each other, no matter what. The stars twinkled above, smiling down on the two best friends.", illustration: "🌅🐼🐿️💞⭐🤝✨" },
+            { text: "And so, the legend of Pablo and Squeaky was told for generations. Whenever a creature in the Whispering Woods felt lost or lonely, they would remember: a true friend is a treasure more precious than any gem. The end. (But if you close your eyes, you can still hear the whisper: 'Together, we can do anything.') Now, dream of bamboo forests and acorn castles — because every child has a best friend somewhere, waiting to share an adventure.", illustration: "📖💤🌙🐼🐿️❤️🌈✨" }
+        ];
+        
+        openStorybookReader(storyTitle, pages);
     }
     
-    // function to handle "Read Full Book" from collection books
+    // ----- Book Collection UI Functions (for other books) -----
     function readBookAsStorybook(book) {
-        let storyContent = book.content;
-        if (!storyContent || storyContent.trim() === "") {
-            storyContent = "Once upon a time, there was a magical story. Let your imagination fly!";
+        let content = book.content;
+        if (!content || content.trim() === "") content = "A delightful story from the forest. Let imagination guide you!";
+        // For simplicity, split into roughly 3-5 pages by sentences
+        let sentences = content.split(/(?<=[.!?])\s+/);
+        let pages = [];
+        let chunk = "";
+        for (let sent of sentences) {
+            if ((chunk + sent).length < 220 && chunk.split(' ').length < 35) {
+                chunk += (chunk ? " " : "") + sent;
+            } else {
+                if (chunk) pages.push(chunk);
+                chunk = sent;
+            }
         }
-        openStorybookReader(book.title, storyContent);
+        if (chunk) pages.push(chunk);
+        if (pages.length === 0) pages = [content];
+        openStorybookReader(book.title, pages);
     }
     
-    // update UI grid
     function updateBookUI() {
-        const searchTerm = document.getElementById('searchInput') ? document.getElementById('searchInput').value.toLowerCase() : '';
+        const searchTerm = document.getElementById('searchInput')?.value.toLowerCase() || '';
         let filtered = booksArray.filter(book => book.title.toLowerCase().includes(searchTerm) || book.purpose.toLowerCase().includes(searchTerm));
         const grid = document.getElementById('booksGrid');
         const noMsgDiv = document.getElementById('noBooksMsg');
         if (!grid) return;
-        
         if (filtered.length === 0) {
             grid.innerHTML = '';
             noMsgDiv.style.display = 'block';
@@ -664,13 +669,12 @@
             card.innerHTML = `
                 <div class="book-title">${escapeHtml(book.title)}</div>
                 <span class="book-purpose">${escapeHtml(book.purpose)}</span>
-                <div class="book-content">${escapeHtml(book.content.length > 100 ? book.content.substring(0, 100) + '…' : book.content)}</div>
-                <button class="read-btn" data-id="${book.id}">📖 Read Full Book (Storybook)</button>
+                <div class="book-content">${escapeHtml(book.content.substring(0, 100))}${book.content.length > 100 ? '…' : ''}</div>
+                <button class="read-btn" data-id="${book.id}">📖 Read Storybook</button>
                 <button class="delete-btn" data-id="${book.id}">🗑️ Remove</button>
             `;
             grid.appendChild(card);
         });
-        
         document.querySelectorAll('.read-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 const id = btn.getAttribute('data-id');
@@ -678,17 +682,16 @@
                 if (book) readBookAsStorybook(book);
             });
         });
-        
         document.querySelectorAll('.delete-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 const id = btn.getAttribute('data-id');
-                if (confirm("Remove this book from your shelf?")) deleteBookById(id);
+                if (confirm("Remove this book?")) deleteBookById(id);
             });
         });
         updateBookCountBadge();
     }
     
-    // ---------- TABS logic ----------
+    // TABS
     function switchTab(tabId) {
         document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.remove('active-pane'));
         document.getElementById(`${tabId}Pane`).classList.add('active-pane');
@@ -700,22 +703,15 @@
     
     document.querySelectorAll('.tab-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
-            const tabName = btn.getAttribute('data-tab');
-            if (tabName === 'collection') switchTab('collection');
-            else if (tabName === 'insert') switchTab('insert');
-            else if (tabName === 'story') switchTab('story');
+            switchTab(btn.getAttribute('data-tab'));
         });
     });
     
-    // Search listener
-    const searchField = document.getElementById('searchInput');
-    if (searchField) {
-        searchField.addEventListener('input', () => {
-            if (document.getElementById('collectionPane').classList.contains('active-pane')) updateBookUI();
-        });
-    }
+    document.getElementById('openPandaSquirrelStory')?.addEventListener('click', openPandaSquirrelAdventure);
     
-    // Handle insert form
+    const searchField = document.getElementById('searchInput');
+    if (searchField) searchField.addEventListener('input', () => { if (document.getElementById('collectionPane').classList.contains('active-pane')) updateBookUI(); });
+    
     const bookForm = document.getElementById('bookForm');
     if (bookForm) {
         bookForm.addEventListener('submit', (e) => {
@@ -723,23 +719,17 @@
             const title = document.getElementById('title').value;
             const purpose = document.getElementById('purpose').value;
             const content = document.getElementById('content').value;
-            if (!title.trim()) { alert("Please enter a book title!"); return; }
+            if (!title.trim()) { alert("Enter a title!"); return; }
             addBook(title, purpose, content);
             document.getElementById('title').value = '';
             document.getElementById('content').value = '';
-            alert(`📚 "${title}" added! Click 'Read Full Book' to see the storybook reader.`);
+            alert(`"${title}" added to library!`);
             switchTab('collection');
             updateBookUI();
         });
     }
     
-    // Classic story button in tab3
-    const classicBtn = document.getElementById('openClassicStoryBtn');
-    if (classicBtn) classicBtn.addEventListener('click', openClassicStory);
-    
-    // init
     loadBooksFromStorage();
-    updateBookCountBadge();
 </script>
 </body>
 </html>
