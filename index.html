@@ -156,6 +156,18 @@
             color: white;
         }
 
+        .delete-btn {
+            background: #f0cfb0;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 6px;
+            font-size: 0.8rem;
+        }
+
         /* form */
         .form-panel {
             background: #fff8ef;
@@ -206,58 +218,101 @@
             transform: scale(0.98);
         }
 
-        /* storybook section */
-        .storybook-container {
-            background: #ffe5ce;
-            border-radius: 56px;
+        /* ========== REAL BOOK STYLES ========== */
+        .real-book-container {
+            background: #d9c2a7;
+            border-radius: 32px;
             padding: 2rem;
-            text-align: center;
+            box-shadow: 0 20px 35px rgba(0,0,0,0.2);
+            position: relative;
         }
 
-        .story-header {
-            font-size: 2rem;
-            margin-bottom: 1rem;
+        .book-pages {
+            background: #fff8ef;
+            border-radius: 24px;
+            padding: 1.8rem;
+            box-shadow: inset 0 0 0 2px #fbe6c2, 0 10px 20px rgba(0,0,0,0.1);
+            min-height: 500px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 2px solid #f3d5a5;
+            padding-bottom: 10px;
+            margin-bottom: 1.5rem;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            color: #b97f3a;
         }
 
         .story-illustration {
-            background: #fff2e2;
-            border-radius: 60px;
-            padding: 2rem;
-            margin: 1rem 0;
-            font-size: 4rem;
-            box-shadow: inset 0 0 0 4px white, 0 12px 20px rgba(0,0,0,0.1);
+            background: #fef0df;
+            border-radius: 48px;
+            padding: 1.5rem;
+            margin: 0.5rem 0 1.5rem;
+            text-align: center;
+            font-size: 5rem;
+            box-shadow: inset 0 0 0 3px white, 0 8px 18px rgba(0,0,0,0.05);
+            min-height: 140px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .story-text {
-            font-size: 1.6rem;
-            font-weight: bold;
-            background: #ffffffc9;
-            padding: 1.5rem;
-            border-radius: 48px;
-            margin: 1rem 0;
+            font-size: 1.35rem;
+            line-height: 1.6;
+            font-family: 'Georgia', 'Times New Roman', serif;
             color: #3b2a1f;
+            background: #ffffffc9;
+            padding: 1.2rem;
+            border-radius: 24px;
+            margin: 0.8rem 0;
+            flex-grow: 1;
         }
 
         .story-nav {
             display: flex;
             gap: 1rem;
             justify-content: center;
-            margin-top: 1.5rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
         }
 
         .story-nav button {
-            background: #bd7f4a;
+            background: #a5652e;
             border: none;
-            padding: 12px 24px;
-            font-size: 1.2rem;
-            border-radius: 40px;
+            padding: 12px 28px;
+            font-size: 1rem;
+            border-radius: 60px;
             color: white;
             font-weight: bold;
             cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .story-nav button:hover:not(:disabled) {
+            background: #c48146;
+            transform: scale(1.02);
+        }
+
+        .story-nav button:disabled {
+            background: #c2a07e;
+            cursor: not-allowed;
+            opacity: 0.6;
         }
 
         .reset-story {
             background: #6c432b;
+        }
+
+        .page-number {
+            font-size: 0.9rem;
+            color: #b97f3a;
         }
 
         .badge {
@@ -276,8 +331,30 @@
         }
 
         @media (max-width: 700px) {
-            .story-text { font-size: 1.2rem; }
-            .story-illustration { font-size: 3rem; }
+            .story-text { font-size: 1rem; }
+            .story-illustration { font-size: 3rem; min-height: 100px; }
+            .book-pages { padding: 1rem; }
+        }
+
+        /* Modal for reading full books */
+        .reading-modal {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            backdrop-filter: blur(4px);
+        }
+        .reading-card {
+            background: #fffaf2;
+            max-width: 600px;
+            width: 90%;
+            border-radius: 48px;
+            padding: 2rem;
+            box-shadow: 0 25px 40px rgba(0,0,0,0.4);
         }
     </style>
 </head>
@@ -300,9 +377,7 @@
             <h2>📚 Your Library <span class="badge" id="bookCountBadge">0 books</span></h2>
             <div><input type="text" id="searchInput" placeholder="🔍 search by title or purpose..." style="width: 220px;"></div>
         </div>
-        <div id="booksGrid" class="grid-books">
-            <!-- dynamic books will appear here -->
-        </div>
+        <div id="booksGrid" class="grid-books"></div>
         <div id="noBooksMsg" style="text-align:center; padding: 3rem; background: #fff0e0; border-radius: 48px; margin-top:1rem;">✨ No books yet. Go to "Insert New Book" to add your first book! ✨</div>
     </div>
 
@@ -332,18 +407,25 @@
         </div>
     </div>
 
-    <!-- TAB 3: Interactive StoryBook for Kids -->
+    <!-- TAB 3: Interactive StoryBook (REAL BOOK STYLE - 12 PAGES) -->
     <div id="storyPane" class="tab-pane">
-        <div class="storybook-container">
-            <div class="story-header">🐣 Whimsy Woods Adventure 🐻‍❄️</div>
-            <div class="story-illustration" id="storyIllustration">🐢✨</div>
-            <div class="story-text" id="storyText">Once upon a time, in the magical Whimsy Woods...</div>
-            <div class="story-nav">
-                <button id="prevBtn" disabled>◀ Previous</button>
-                <button id="nextBtn">Next ▶</button>
-                <button id="resetStoryBtn" class="reset-story">🔄 Start Over</button>
+        <div class="real-book-container">
+            <div class="book-pages">
+                <div class="page-header">
+                    <span>📖 Whimsy Woods</span>
+                    <span class="page-number" id="pageNumberDisplay">Page 1</span>
+                </div>
+                <div class="story-illustration" id="storyIllustration">🐢✨</div>
+                <div class="story-text" id="storyText">
+                    Once upon a time, in the magical land of Whimsy Woods...
+                </div>
+                <div class="story-nav">
+                    <button id="prevBtn" disabled>◀ Previous Page</button>
+                    <button id="nextBtn">Next Page ▶</button>
+                    <button id="resetStoryBtn" class="reset-story">🔄 Beginning</button>
+                </div>
+                <p style="margin-top: 20px; text-align: center; font-style: italic; font-size:0.8rem;">🌟 Turn the pages like a real storybook — 12 wonderful chapters!</p>
             </div>
-            <p style="margin-top: 20px;">🌟 A colorful story where you choose the mood! Each page brings new illustration & fun text.</p>
         </div>
     </div>
     <footer>🌸 Create, Read & Imagine — your personal library & story garden. Data stored locally in your browser.</footer>
@@ -353,13 +435,11 @@
     // ---------- Book Collection Manager (localStorage) ----------
     let booksArray = [];
 
-    // Load books from localStorage or initialize with sample books for demo
     function loadBooksFromStorage() {
         const stored = localStorage.getItem("magicBookshelf");
         if (stored) {
             booksArray = JSON.parse(stored);
         } else {
-            // default sample books (study + general + kid-friendly)
             booksArray = [
                 { id: "b1", title: "🌱 Science of Plants", purpose: "Study", content: "Photosynthesis: plants convert sunlight into energy. Learn fascinating facts about roots, leaves, and flowers. Perfect for biology study!" },
                 { id: "b2", title: "🐉 Dragon Tales for Beginners", purpose: "General", content: "A delightful story of a little dragon who learns friendship. Read about Spark and his journey to find courage." },
@@ -373,51 +453,72 @@
 
     function saveBooksToStorage() {
         localStorage.setItem("magicBookshelf", JSON.stringify(booksArray));
+        updateBookCountBadge();
     }
 
-    // helper: generate simple unique id
-    function generateId() {
-        return Date.now() + '-' + Math.random().toString(36).substr(2, 6);
-    }
+    function generateId() { return Date.now() + '-' + Math.random().toString(36).substr(2, 6); }
 
-    // Add new book
     function addBook(title, purpose, content) {
         if (!title.trim()) return false;
-        const newBook = {
+        booksArray.push({
             id: generateId(),
             title: title.trim(),
             purpose: purpose,
             content: content.trim() || "No additional content provided. Let your imagination flow!"
-        };
-        booksArray.push(newBook);
+        });
         saveBooksToStorage();
         updateBookUI();
         return true;
     }
 
-    // Delete book (optional but handy – we need remove for manage, but we'll add remove button to each card)
     function deleteBookById(id) {
         booksArray = booksArray.filter(book => book.id !== id);
         saveBooksToStorage();
         updateBookUI();
     }
 
-    // render book grid with filtering
+    function updateBookCountBadge() {
+        const badge = document.getElementById('bookCountBadge');
+        if (badge) badge.innerText = booksArray.length + (booksArray.length === 1 ? " book" : " books");
+    }
+
+    function escapeHtml(str) {
+        if(!str) return '';
+        return str.replace(/[&<>]/g, function(m) {
+            if(m === '&') return '&amp;';
+            if(m === '<') return '&lt;';
+            if(m === '>') return '&gt;';
+            return m;
+        }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) { return c; });
+    }
+
+    function showReadModal(title, content) {
+        const modalDiv = document.createElement('div');
+        modalDiv.className = 'reading-modal';
+        const inner = document.createElement('div');
+        inner.className = 'reading-card';
+        inner.innerHTML = `
+            <h2 style="color:#a3521a; margin-bottom: 12px;">📘 ${escapeHtml(title)}</h2>
+            <div style="max-height: 60vh; overflow-y: auto; line-height:1.5; white-space: pre-wrap; margin-bottom: 24px;">${escapeHtml(content)}</div>
+            <button id="closeModalBtn" style="background:#c26b2e; color:white; border:none; padding: 10px 20px; border-radius: 40px; cursor:pointer;">Close Book</button>
+        `;
+        modalDiv.appendChild(inner);
+        document.body.appendChild(modalDiv);
+        document.getElementById('closeModalBtn').addEventListener('click', () => modalDiv.remove());
+        modalDiv.addEventListener('click', (e) => { if(e.target === modalDiv) modalDiv.remove(); });
+    }
+
     function updateBookUI() {
         const searchTerm = document.getElementById('searchInput') ? document.getElementById('searchInput').value.toLowerCase() : '';
-        let filtered = [...booksArray];
-        if (searchTerm) {
-            filtered = filtered.filter(book => book.title.toLowerCase().includes(searchTerm) || book.purpose.toLowerCase().includes(searchTerm));
-        }
+        let filtered = booksArray.filter(book => book.title.toLowerCase().includes(searchTerm) || book.purpose.toLowerCase().includes(searchTerm));
         const grid = document.getElementById('booksGrid');
         const noMsgDiv = document.getElementById('noBooksMsg');
-        const bookCountSpan = document.getElementById('bookCountBadge');
-        if (bookCountSpan) bookCountSpan.innerText = booksArray.length + (booksArray.length === 1 ? " book" : " books");
-        
         if (!grid) return;
+        
         if (filtered.length === 0) {
             grid.innerHTML = '';
             noMsgDiv.style.display = 'block';
+            updateBookCountBadge();
             return;
         }
         noMsgDiv.style.display = 'none';
@@ -428,95 +529,84 @@
             card.innerHTML = `
                 <div class="book-title">${escapeHtml(book.title)}</div>
                 <span class="book-purpose">${escapeHtml(book.purpose)}</span>
-                <div class="book-content" id="content-${book.id}">${escapeHtml(book.content.length > 120 ? book.content.substring(0, 120) + '…' : book.content)}</div>
-                <button class="read-btn" data-id="${book.id}" data-fullcontent="${escapeHtml(book.content)}" data-title="${escapeHtml(book.title)}">📖 Read Full Book</button>
-                <button style="background:#f0cfb0; margin-top:6px;" class="delete-btn" data-id="${book.id}">🗑️ Remove</button>
+                <div class="book-content">${escapeHtml(book.content.length > 120 ? book.content.substring(0, 120) + '…' : book.content)}</div>
+                <button class="read-btn" data-id="${book.id}" data-title="${escapeHtml(book.title)}" data-content="${escapeHtml(book.content)}">📖 Read Full Book</button>
+                <button class="delete-btn" data-id="${book.id}">🗑️ Remove</button>
             `;
             grid.appendChild(card);
         });
-        
-        // attach read events
         document.querySelectorAll('.read-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const id = btn.getAttribute('data-id');
-                const fullContent = btn.getAttribute('data-fullcontent');
                 const title = btn.getAttribute('data-title');
-                showReadModal(title, fullContent);
+                const content = btn.getAttribute('data-content');
+                showReadModal(title, content);
             });
         });
-        
-        // attach delete events
         document.querySelectorAll('.delete-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
-                e.stopPropagation();
                 const id = btn.getAttribute('data-id');
-                if (confirm("Remove this book from your shelf?")) {
-                    deleteBookById(id);
-                }
+                if (confirm("Remove this book from your shelf?")) deleteBookById(id);
             });
         });
+        updateBookCountBadge();
     }
-    
-    // simple escape to avoid XSS
-    function escapeHtml(str) {
-        if(!str) return '';
-        return str.replace(/[&<>]/g, function(m) {
-            if(m === '&') return '&amp;';
-            if(m === '<') return '&lt;';
-            if(m === '>') return '&gt;';
-            return m;
-        }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
-            return c;
-        });
-    }
-    
-    // Modal for full reading experience
-    function showReadModal(title, content) {
-        const modalDiv = document.createElement('div');
-        modalDiv.style.position = 'fixed';
-        modalDiv.style.top = '0'; modalDiv.style.left = '0';
-        modalDiv.style.width = '100%'; modalDiv.style.height = '100%';
-        modalDiv.style.backgroundColor = 'rgba(0,0,0,0.7)';
-        modalDiv.style.display = 'flex';
-        modalDiv.style.alignItems = 'center';
-        modalDiv.style.justifyContent = 'center';
-        modalDiv.style.zIndex = '1000';
-        modalDiv.style.backdropFilter = 'blur(3px)';
-        const inner = document.createElement('div');
-        inner.style.backgroundColor = '#fffaf2';
-        inner.style.maxWidth = '550px';
-        inner.style.width = '90%';
-        inner.style.borderRadius = '48px';
-        inner.style.padding = '2rem';
-        inner.style.boxShadow = '0 25px 40px rgba(0,0,0,0.3)';
-        inner.style.position = 'relative';
-        inner.innerHTML = `
-            <h2 style="color:#a3521a; margin-bottom: 12px;">📘 ${escapeHtml(title)}</h2>
-            <div style="max-height: 60vh; overflow-y: auto; line-height:1.5; white-space: pre-wrap; margin-bottom: 24px;">${escapeHtml(content)}</div>
-            <button id="closeModalBtn" style="background:#c26b2e; color:white; border:none; padding: 10px 20px; border-radius: 40px; cursor:pointer;">Close</button>
-        `;
-        modalDiv.appendChild(inner);
-        document.body.appendChild(modalDiv);
-        document.getElementById('closeModalBtn').addEventListener('click', () => modalDiv.remove());
-        modalDiv.addEventListener('click', (e) => { if(e.target === modalDiv) modalDiv.remove(); });
-    }
-    
-    // ---------- Interactive StoryBook (Kid's story with illustration & text) ----------
-    // Story data: each page has (text, emoji illustration)
+
+    // ---------- REAL STORYBOOK: 12 PAGES (full narrative, real book feel) ----------
     const storyPages = [
-        { text: "🐣 In Whimsy Woods, a little turtle named Tuck found a shiny golden key.", illustration: "🐢🔑✨" },
-        { text: "Tuck met a friendly fox. 'That key opens the Cloud Castle!' said Felix the fox.", illustration: "🦊🗝️☁️" },
-        { text: "Together they climbed the Rainbow Staircase and saw magical butterflies.", illustration: "🌈🦋🐢🦊" },
-        { text: "At the castle, they met a sleepy dragon who loved cookies.", illustration: "🐉🍪😴🏰" },
-        { text: "The dragon gave them a flying carpet. 'Let's return home before sunset!'", illustration: "🪄🕌🐢🦊✨" },
-        { text: "They flew back to Whimsy Woods and shared golden cookies with all forest friends.", illustration: "🍪🌳🐿️🐇🎉" },
-        { text: "And they learned: the greatest treasure is friendship & courage. THE END ❤️", illustration: "❤️🌟📖🐢🦊" }
+        { 
+            text: "Deep in the heart of Whimsy Woods, where the trees whispered secrets and the streams sang lullabies, lived a small, curious turtle named Tuck. Tuck loved adventures more than juicy berries! One sunny morning, while exploring a hidden glade, he spotted something glittering under a giant mushroom.",
+            illustration: "🐢🌲🍄✨"
+        },
+        { 
+            text: "It was a magnificent golden key! Tuck picked it up carefully. 'This key must open something special,' he whispered. Just then, a friendly fox with russet fur peeked from behind a fern. 'That's the key to the Cloud Castle!' said Felix the fox, his eyes shining with excitement.",
+            illustration: "🔑🦊🐢🌟"
+        },
+        { 
+            text: "Tuck and Felix decided to journey together. They followed the map made of fireflies. Along the way, they met a squirrel carrying an acorn compass. 'Follow the rainbow staircase hidden behind the waterfall,' the squirrel chattered, pointing toward a shimmering cascade.",
+            illustration: "🐿️🌈💧🐢🦊"
+        },
+        { 
+            text: "Behind the waterfall, a magnificent rainbow staircase spiraled into the clouds! Each step glowed with a different color. Tuck's little legs waddled fast while Felix leaped ahead laughing. 'We're almost there!' Felix shouted as fluffy clouds wrapped around them.",
+            illustration: "🌈🪜☁️✨🦊"
+        },
+        { 
+            text: "At the top of the stairs stood the Cloud Castle — made of crystallized stardust and dreams. The gates were enormous, and there was a small keyhole shaped like a crescent moon. Tuck's heart pounded as he inserted the golden key… CLICK! The gates swung open with a gentle chime.",
+            illustration: "🏰🔑🌙⭐✨"
+        },
+        { 
+            text: "Inside, they found a sleepy dragon named Drizzle. Drizzle was curled on a mountain of pillows, snoring softly. 'Wake up, we have your key!' Tuck called. The dragon opened one eye, then smiled. 'Thank you! I lost that key a hundred years ago. As a reward, I'll give you a flying carpet!'",
+            illustration: "🐉🛌💤🧸🎁"
+        },
+        { 
+            text: "The flying carpet was woven from moonbeams and stardust. It could fly faster than the wind. 'But be careful,' warned Drizzle, 'it only works for kind hearts.' Tuck and Felix bowed gratefully and stepped onto the carpet. WHOOSH! They soared above the clouds.",
+            illustration: "🪄🕌🌙🐢🦊💨"
+        },
+        { 
+            text: "From above, they saw the entire Whimsy Woods: glittering rivers, candy-colored trees, and the tiny homes of their friends. 'Let's share this adventure!' suggested Tuck. They landed near the Great Oak Tree and decided to bake magical cookies for everyone.",
+            illustration: "🍪✨🌳🎨🏡"
+        },
+        { 
+            text: "Using stardust from the carpet, they mixed a batch of golden dough. The cookies sparkled with kindness! Soon, all the forest animals gathered: rabbits, hedgehogs, owls, and even shy badgers. Each cookie made everyone feel warm and happy inside.",
+            illustration: "🍪🌟🐇🦔🦉❤️"
+        },
+        { 
+            text: "That night, Tuck realized something important. 'The real treasure wasn't the castle or the carpet,' he announced. 'It was having a friend like Felix, and sharing joy with everyone.' The animals cheered, and they danced under the moonlight until the stars sang lullabies.",
+            illustration: "🌕🎶🐢🦊💖🌌"
+        },
+        { 
+            text: "The golden key had one last magic: it could open any door to imagination. Tuck placed it in the hollow of the Great Oak Tree so any creature could borrow it for their own adventures. 'The forest will always be magical as long as we dream together,' Tuck said with a smile.",
+            illustration: "🗝️🌳✨🐢💭🌈"
+        },
+        { 
+            text: "And so, Whimsy Woods remained a place of wonder, friendship, and endless stories. Tuck and Felix became the guardians of the Golden Key, welcoming every new adventure with open hearts. The End. (Or is it just the beginning? Turn back to page one and dream again!)",
+            illustration: "📖✨🐢🦊🌍❤️🔁"
+        }
     ];
     
     let currentStoryIndex = 0;
     const storyTextElem = document.getElementById('storyText');
     const storyIllustElem = document.getElementById('storyIllustration');
+    const pageNumberSpan = document.getElementById('pageNumberDisplay');
     const prevBtn = document.getElementById('prevBtn');
     const nextBtn = document.getElementById('nextBtn');
     const resetStoryBtn = document.getElementById('resetStoryBtn');
@@ -526,9 +616,9 @@
         const page = storyPages[currentStoryIndex];
         storyTextElem.innerText = page.text;
         storyIllustElem.innerHTML = page.illustration;
-        // update button states
+        if (pageNumberSpan) pageNumberSpan.innerText = `Page ${currentStoryIndex+1} of ${storyPages.length}`;
         if (prevBtn) prevBtn.disabled = (currentStoryIndex === 0);
-        if (nextBtn) nextBtn.innerText = (currentStoryIndex === storyPages.length - 1) ? "🏁 Finish" : "Next ▶";
+        if (nextBtn) nextBtn.disabled = (currentStoryIndex === storyPages.length - 1);
     }
     
     function nextStory() {
@@ -536,8 +626,8 @@
             currentStoryIndex++;
             updateStoryPage();
         } else {
-            // wrap around? but we can reset or show confetti effect
-            alert("🎉 You finished the story! Press 'Start Over' to read again or enjoy another journey. 🎉");
+            // gentle finish message
+            alert("🎉 You've reached the end of the story! Press 'Beginning' to start a new adventure. 🎉");
         }
     }
     
@@ -553,7 +643,6 @@
         updateStoryPage();
     }
     
-    // attach story listeners
     if (nextBtn) nextBtn.addEventListener('click', nextStory);
     if (prevBtn) prevBtn.addEventListener('click', prevStory);
     if (resetStoryBtn) resetStoryBtn.addEventListener('click', resetStory);
@@ -565,10 +654,8 @@
         document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
         const activeBtn = Array.from(document.querySelectorAll('.tab-btn')).find(btn => btn.getAttribute('data-tab') === tabId);
         if (activeBtn) activeBtn.classList.add('active');
-        // If switching to collection, refresh grid (in case of search updates)
-        if (tabId === 'collection') {
-            updateBookUI(); // sync any search field update
-        }
+        if (tabId === 'collection') updateBookUI();
+        if (tabId === 'story') updateStoryPage(); // ensure story sync
     }
     
     document.querySelectorAll('.tab-btn').forEach(btn => {
@@ -584,9 +671,7 @@
     const searchField = document.getElementById('searchInput');
     if (searchField) {
         searchField.addEventListener('input', () => {
-            if (document.getElementById('collectionPane').classList.contains('active-pane')) {
-                updateBookUI();
-            }
+            if (document.getElementById('collectionPane').classList.contains('active-pane')) updateBookUI();
         });
     }
     
@@ -598,19 +683,12 @@
             const title = document.getElementById('title').value;
             const purpose = document.getElementById('purpose').value;
             const content = document.getElementById('content').value;
-            if (!title.trim()) {
-                alert("Please enter a book title!");
-                return;
-            }
+            if (!title.trim()) { alert("Please enter a book title!"); return; }
             addBook(title, purpose, content);
-            // reset form
             document.getElementById('title').value = '';
             document.getElementById('content').value = '';
-            document.getElementById('purpose').value = 'Study';
             alert(`📚 "${title}" added to your collection!`);
-            // optional switch to collection tab to see new addition
             switchTab('collection');
-            // force update search display
             updateBookUI();
         });
     }
@@ -618,46 +696,18 @@
     // initial load
     loadBooksFromStorage();
     updateStoryPage();
+    updateBookCountBadge();
     
-    // extra check for initial noBooksMsg toggle
-    function initialMsgToggle() {
-        const grid = document.getElementById('booksGrid');
+    // ensure noBooksMsg correct after delete etc.
+    function finalBookMsgSync() {
         const noMsg = document.getElementById('noBooksMsg');
-        if (booksArray.length === 0 && grid && noMsg) {
-            grid.innerHTML = '';
-            noMsg.style.display = 'block';
-        } else if(noMsg) {
-            noMsg.style.display = 'none';
-        }
+        if(booksArray.length === 0 && noMsg) noMsg.style.display = 'block';
+        else if(noMsg) noMsg.style.display = 'none';
     }
-    
-    // override updateBookUI to also handle message consistency
-    const originalUpdate = updateBookUI;
-    window.updateBookUI = function() {
-        originalUpdate();
-        const grid = document.getElementById('booksGrid');
-        const noMsg = document.getElementById('noBooksMsg');
-        if (booksArray.length === 0 && grid && noMsg && (!grid.children.length || grid.children.length === 0)) {
-            noMsg.style.display = 'block';
-        } else if (noMsg && booksArray.length > 0) {
-            noMsg.style.display = 'none';
-        }
-    };
+    const origUpdate = updateBookUI;
+    window.updateBookUI = function() { origUpdate(); finalBookMsgSync(); };
     updateBookUI = window.updateBookUI;
     updateBookUI();
-    
-    // final init: ensure book count badge after potential delete
-    function refreshBadge() {
-        const badge = document.getElementById('bookCountBadge');
-        if (badge) badge.innerText = booksArray.length + (booksArray.length === 1 ? " book" : " books");
-    }
-    const origSave = saveBooksToStorage;
-    window.saveBooksToStorage = function() {
-        origSave();
-        refreshBadge();
-    };
-    saveBooksToStorage = window.saveBooksToStorage;
-    refreshBadge();
 </script>
 </body>
 </html>
