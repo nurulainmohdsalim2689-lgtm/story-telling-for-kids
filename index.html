@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>✨ Magic Bookshelf | Study & Story Books for Kids</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Poppins', 'Comic Neue', system-ui, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(145deg, #f9f3e6 0%, #fff0df 100%);
+            color: #2e241f;
+            padding: 1.5rem;
+            min-height: 100vh;
+        }
+
+        /* main container */
+        .app-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* header + tabs */
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, #b45f2b, #e2a05b);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .header p {
+            color: #5e3a2b;
+            font-weight: 500;
+        }
+
+        .tabs {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 1.5rem 0 2rem;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            background: #faeedc;
+            border: none;
+            padding: 0.75rem 1.8rem;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 60px;
+            cursor: pointer;
+            transition: 0.2s;
+            color: #6b3e1c;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+        }
+
+        .tab-btn.active {
+            background: #ffb882;
+            color: white;
+            box-shadow: 0 8px 18px rgba(255,140,60,0.3);
+        }
+
+        .tab-pane {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .tab-pane.active-pane {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+
+        /* Card & grid styles */
+        .grid-books {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 1.8rem;
+            margin-top: 1rem;
+        }
+
+        .book-card {
+            background: white;
+            border-radius: 32px;
+            padding: 1.2rem;
+            box-shadow: 0 12px 24px rgba(0,0,0,0.08);
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: 1px solid #ffe1b9;
+        }
+
+        .book-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 30px rgba(0,0,0,0.12);
+        }
+
+        .book-title {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: #a3521a;
+            margin-bottom: 0.5rem;
+        }
+
+        .book-purpose {
+            display: inline-block;
+            background: #ffecd6;
+            padding: 0.2rem 0.8rem;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            margin-bottom: 0.8rem;
+            color: #a55724;
+        }
+
+        .book-content {
+            font-size: 0.9rem;
+            line-height: 1.4;
+            color: #4a3729;
+            max-height: 100px;
+            overflow-y: auto;
+            margin: 12px 0;
+            background: #fef6ed;
+            padding: 8px 12px;
+            border-radius: 20px;
+        }
+
+        .read-btn {
+            background: #f5bc7a;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 40px;
+            font-weight: bold;
+            color: #2d1b10;
+            cursor: pointer;
+            margin-top: 8px;
+            width: 100%;
+            transition: 0.2s;
+        }
+
+        .read-btn:hover {
+            background: #ed9b4a;
+            color: white;
+        }
+
+        /* form */
+        .form-panel {
+            background: #fff8ef;
+            border-radius: 48px;
+            padding: 1.8rem;
+            margin-top: 1rem;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        label {
+            font-weight: 600;
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #ffddb0;
+            border-radius: 60px;
+            font-size: 1rem;
+            background: white;
+        }
+
+        textarea {
+            border-radius: 24px;
+            resize: vertical;
+        }
+
+        button.submit {
+            background: #b9632c;
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 60px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: 0.2s;
+        }
+
+        button.submit:hover {
+            background: #9a4a1a;
+            transform: scale(0.98);
+        }
+
+        /* storybook section */
+        .storybook-container {
+            background: #ffe5ce;
+            border-radius: 56px;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .story-header {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .story-illustration {
+            background: #fff2e2;
+            border-radius: 60px;
+            padding: 2rem;
+            margin: 1rem 0;
+            font-size: 4rem;
+            box-shadow: inset 0 0 0 4px white, 0 12px 20px rgba(0,0,0,0.1);
+        }
+
+        .story-text {
+            font-size: 1.6rem;
+            font-weight: bold;
+            background: #ffffffc9;
+            padding: 1.5rem;
+            border-radius: 48px;
+            margin: 1rem 0;
+            color: #3b2a1f;
+        }
+
+        .story-nav {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1.5rem;
+        }
+
+        .story-nav button {
+            background: #bd7f4a;
+            border: none;
+            padding: 12px 24px;
+            font-size: 1.2rem;
+            border-radius: 40px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .reset-story {
+            background: #6c432b;
+        }
+
+        .badge {
+            background: #f3cf9b;
+            display: inline-block;
+            padding: 0.2rem 1rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+        }
+
+        footer {
+            margin-top: 3rem;
+            text-align: center;
+            opacity: 0.7;
+            font-size: 0.8rem;
+        }
+
+        @media (max-width: 700px) {
+            .story-text { font-size: 1.2rem; }
+            .story-illustration { font-size: 3rem; }
+        }
+    </style>
+</head>
+<body>
+<div class="app-container">
+    <div class="header">
+        <h1>📚 Magical Bookshelf</h1>
+        <p>✨ study • read • collect • imagine ✨</p>
+    </div>
+
+    <div class="tabs">
+        <button class="tab-btn active" data-tab="collection">📖 Book Collection</button>
+        <button class="tab-btn" data-tab="insert">➕ Insert New Book</button>
+        <button class="tab-btn" data-tab="story">🎨 Interactive StoryBook for Kids</button>
+    </div>
+
+    <!-- TAB 1: Book Collection (see, read) -->
+    <div id="collectionPane" class="tab-pane active-pane">
+        <div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; margin-bottom: 1rem;">
+            <h2>📚 Your Library <span class="badge" id="bookCountBadge">0 books</span></h2>
+            <div><input type="text" id="searchInput" placeholder="🔍 search by title or purpose..." style="width: 220px;"></div>
+        </div>
+        <div id="booksGrid" class="grid-books">
+            <!-- dynamic books will appear here -->
+        </div>
+        <div id="noBooksMsg" style="text-align:center; padding: 3rem; background: #fff0e0; border-radius: 48px; margin-top:1rem;">✨ No books yet. Go to "Insert New Book" to add your first book! ✨</div>
+    </div>
+
+    <!-- TAB 2: Insert new book (study/general) -->
+    <div id="insertPane" class="tab-pane">
+        <div class="form-panel">
+            <h2>📝 Add a new book to the shelf</h2>
+            <form id="bookForm">
+                <div class="form-group">
+                    <label>📕 Book Title *</label>
+                    <input type="text" id="title" placeholder="e.g. 'JavaScript Adventures'" required>
+                </div>
+                <div class="form-group">
+                    <label>🎯 Purpose (Study / General)</label>
+                    <select id="purpose">
+                        <option value="Study">📘 Study</option>
+                        <option value="General">📖 General</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>📄 Content / Summary (visible when reading)</label>
+                    <textarea rows="3" id="content" placeholder="Write a short summary, notes, or story extract..."></textarea>
+                </div>
+                <button type="submit" class="submit">➕ Add Book to Collection</button>
+            </form>
+            <p style="margin-top: 16px; font-size:0.85rem;">💡 Tip: After adding, switch to "Book Collection" to see & read!</p>
+        </div>
+    </div>
+
+    <!-- TAB 3: Interactive StoryBook for Kids -->
+    <div id="storyPane" class="tab-pane">
+        <div class="storybook-container">
+            <div class="story-header">🐣 Whimsy Woods Adventure 🐻‍❄️</div>
+            <div class="story-illustration" id="storyIllustration">🐢✨</div>
+            <div class="story-text" id="storyText">Once upon a time, in the magical Whimsy Woods...</div>
+            <div class="story-nav">
+                <button id="prevBtn" disabled>◀ Previous</button>
+                <button id="nextBtn">Next ▶</button>
+                <button id="resetStoryBtn" class="reset-story">🔄 Start Over</button>
+            </div>
+            <p style="margin-top: 20px;">🌟 A colorful story where you choose the mood! Each page brings new illustration & fun text.</p>
+        </div>
+    </div>
+    <footer>🌸 Create, Read & Imagine — your personal library & story garden. Data stored locally in your browser.</footer>
+</div>
+
+<script>
+    // ---------- Book Collection Manager (localStorage) ----------
+    let booksArray = [];
+
+    // Load books from localStorage or initialize with sample books for demo
+    function loadBooksFromStorage() {
+        const stored = localStorage.getItem("magicBookshelf");
+        if (stored) {
+            booksArray = JSON.parse(stored);
+        } else {
+            // default sample books (study + general + kid-friendly)
+            booksArray = [
+                { id: "b1", title: "🌱 Science of Plants", purpose: "Study", content: "Photosynthesis: plants convert sunlight into energy. Learn fascinating facts about roots, leaves, and flowers. Perfect for biology study!" },
+                { id: "b2", title: "🐉 Dragon Tales for Beginners", purpose: "General", content: "A delightful story of a little dragon who learns friendship. Read about Spark and his journey to find courage." },
+                { id: "b3", title: "🧮 Math is Fun", purpose: "Study", content: "Interactive math tricks: multiplication table tips, fractions made easy, and puzzles for young learners." },
+                { id: "b4", title: "🌈 Rainbow Adventures", purpose: "General", content: "A heartwarming tale about colors, kindness, and discovering the magic of rainbows." }
+            ];
+            saveBooksToStorage();
+        }
+        updateBookUI();
+    }
+
+    function saveBooksToStorage() {
+        localStorage.setItem("magicBookshelf", JSON.stringify(booksArray));
+    }
+
+    // helper: generate simple unique id
+    function generateId() {
+        return Date.now() + '-' + Math.random().toString(36).substr(2, 6);
+    }
+
+    // Add new book
+    function addBook(title, purpose, content) {
+        if (!title.trim()) return false;
+        const newBook = {
+            id: generateId(),
+            title: title.trim(),
+            purpose: purpose,
+            content: content.trim() || "No additional content provided. Let your imagination flow!"
+        };
+        booksArray.push(newBook);
+        saveBooksToStorage();
+        updateBookUI();
+        return true;
+    }
+
+    // Delete book (optional but handy – we need remove for manage, but we'll add remove button to each card)
+    function deleteBookById(id) {
+        booksArray = booksArray.filter(book => book.id !== id);
+        saveBooksToStorage();
+        updateBookUI();
+    }
+
+    // render book grid with filtering
+    function updateBookUI() {
+        const searchTerm = document.getElementById('searchInput') ? document.getElementById('searchInput').value.toLowerCase() : '';
+        let filtered = [...booksArray];
+        if (searchTerm) {
+            filtered = filtered.filter(book => book.title.toLowerCase().includes(searchTerm) || book.purpose.toLowerCase().includes(searchTerm));
+        }
+        const grid = document.getElementById('booksGrid');
+        const noMsgDiv = document.getElementById('noBooksMsg');
+        const bookCountSpan = document.getElementById('bookCountBadge');
+        if (bookCountSpan) bookCountSpan.innerText = booksArray.length + (booksArray.length === 1 ? " book" : " books");
+        
+        if (!grid) return;
+        if (filtered.length === 0) {
+            grid.innerHTML = '';
+            noMsgDiv.style.display = 'block';
+            return;
+        }
+        noMsgDiv.style.display = 'none';
+        grid.innerHTML = '';
+        filtered.forEach(book => {
+            const card = document.createElement('div');
+            card.className = 'book-card';
+            card.innerHTML = `
+                <div class="book-title">${escapeHtml(book.title)}</div>
+                <span class="book-purpose">${escapeHtml(book.purpose)}</span>
+                <div class="book-content" id="content-${book.id}">${escapeHtml(book.content.length > 120 ? book.content.substring(0, 120) + '…' : book.content)}</div>
+                <button class="read-btn" data-id="${book.id}" data-fullcontent="${escapeHtml(book.content)}" data-title="${escapeHtml(book.title)}">📖 Read Full Book</button>
+                <button style="background:#f0cfb0; margin-top:6px;" class="delete-btn" data-id="${book.id}">🗑️ Remove</button>
+            `;
+            grid.appendChild(card);
+        });
+        
+        // attach read events
+        document.querySelectorAll('.read-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const id = btn.getAttribute('data-id');
+                const fullContent = btn.getAttribute('data-fullcontent');
+                const title = btn.getAttribute('data-title');
+                showReadModal(title, fullContent);
+            });
+        });
+        
+        // attach delete events
+        document.querySelectorAll('.delete-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const id = btn.getAttribute('data-id');
+                if (confirm("Remove this book from your shelf?")) {
+                    deleteBookById(id);
+                }
+            });
+        });
+    }
+    
+    // simple escape to avoid XSS
+    function escapeHtml(str) {
+        if(!str) return '';
+        return str.replace(/[&<>]/g, function(m) {
+            if(m === '&') return '&amp;';
+            if(m === '<') return '&lt;';
+            if(m === '>') return '&gt;';
+            return m;
+        }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
+            return c;
+        });
+    }
+    
+    // Modal for full reading experience
+    function showReadModal(title, content) {
+        const modalDiv = document.createElement('div');
+        modalDiv.style.position = 'fixed';
+        modalDiv.style.top = '0'; modalDiv.style.left = '0';
+        modalDiv.style.width = '100%'; modalDiv.style.height = '100%';
+        modalDiv.style.backgroundColor = 'rgba(0,0,0,0.7)';
+        modalDiv.style.display = 'flex';
+        modalDiv.style.alignItems = 'center';
+        modalDiv.style.justifyContent = 'center';
+        modalDiv.style.zIndex = '1000';
+        modalDiv.style.backdropFilter = 'blur(3px)';
+        const inner = document.createElement('div');
+        inner.style.backgroundColor = '#fffaf2';
+        inner.style.maxWidth = '550px';
+        inner.style.width = '90%';
+        inner.style.borderRadius = '48px';
+        inner.style.padding = '2rem';
+        inner.style.boxShadow = '0 25px 40px rgba(0,0,0,0.3)';
+        inner.style.position = 'relative';
+        inner.innerHTML = `
+            <h2 style="color:#a3521a; margin-bottom: 12px;">📘 ${escapeHtml(title)}</h2>
+            <div style="max-height: 60vh; overflow-y: auto; line-height:1.5; white-space: pre-wrap; margin-bottom: 24px;">${escapeHtml(content)}</div>
+            <button id="closeModalBtn" style="background:#c26b2e; color:white; border:none; padding: 10px 20px; border-radius: 40px; cursor:pointer;">Close</button>
+        `;
+        modalDiv.appendChild(inner);
+        document.body.appendChild(modalDiv);
+        document.getElementById('closeModalBtn').addEventListener('click', () => modalDiv.remove());
+        modalDiv.addEventListener('click', (e) => { if(e.target === modalDiv) modalDiv.remove(); });
+    }
+    
+    // ---------- Interactive StoryBook (Kid's story with illustration & text) ----------
+    // Story data: each page has (text, emoji illustration)
+    const storyPages = [
+        { text: "🐣 In Whimsy Woods, a little turtle named Tuck found a shiny golden key.", illustration: "🐢🔑✨" },
+        { text: "Tuck met a friendly fox. 'That key opens the Cloud Castle!' said Felix the fox.", illustration: "🦊🗝️☁️" },
+        { text: "Together they climbed the Rainbow Staircase and saw magical butterflies.", illustration: "🌈🦋🐢🦊" },
+        { text: "At the castle, they met a sleepy dragon who loved cookies.", illustration: "🐉🍪😴🏰" },
+        { text: "The dragon gave them a flying carpet. 'Let's return home before sunset!'", illustration: "🪄🕌🐢🦊✨" },
+        { text: "They flew back to Whimsy Woods and shared golden cookies with all forest friends.", illustration: "🍪🌳🐿️🐇🎉" },
+        { text: "And they learned: the greatest treasure is friendship & courage. THE END ❤️", illustration: "❤️🌟📖🐢🦊" }
+    ];
+    
+    let currentStoryIndex = 0;
+    const storyTextElem = document.getElementById('storyText');
+    const storyIllustElem = document.getElementById('storyIllustration');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const resetStoryBtn = document.getElementById('resetStoryBtn');
+    
+    function updateStoryPage() {
+        if (!storyTextElem || !storyIllustElem) return;
+        const page = storyPages[currentStoryIndex];
+        storyTextElem.innerText = page.text;
+        storyIllustElem.innerHTML = page.illustration;
+        // update button states
+        if (prevBtn) prevBtn.disabled = (currentStoryIndex === 0);
+        if (nextBtn) nextBtn.innerText = (currentStoryIndex === storyPages.length - 1) ? "🏁 Finish" : "Next ▶";
+    }
+    
+    function nextStory() {
+        if (currentStoryIndex < storyPages.length - 1) {
+            currentStoryIndex++;
+            updateStoryPage();
+        } else {
+            // wrap around? but we can reset or show confetti effect
+            alert("🎉 You finished the story! Press 'Start Over' to read again or enjoy another journey. 🎉");
+        }
+    }
+    
+    function prevStory() {
+        if (currentStoryIndex > 0) {
+            currentStoryIndex--;
+            updateStoryPage();
+        }
+    }
+    
+    function resetStory() {
+        currentStoryIndex = 0;
+        updateStoryPage();
+    }
+    
+    // attach story listeners
+    if (nextBtn) nextBtn.addEventListener('click', nextStory);
+    if (prevBtn) prevBtn.addEventListener('click', prevStory);
+    if (resetStoryBtn) resetStoryBtn.addEventListener('click', resetStory);
+    
+    // ---------- TABS logic ----------
+    function switchTab(tabId) {
+        document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.remove('active-pane'));
+        document.getElementById(`${tabId}Pane`).classList.add('active-pane');
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        const activeBtn = Array.from(document.querySelectorAll('.tab-btn')).find(btn => btn.getAttribute('data-tab') === tabId);
+        if (activeBtn) activeBtn.classList.add('active');
+        // If switching to collection, refresh grid (in case of search updates)
+        if (tabId === 'collection') {
+            updateBookUI(); // sync any search field update
+        }
+    }
+    
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const tabName = btn.getAttribute('data-tab');
+            if (tabName === 'collection') switchTab('collection');
+            else if (tabName === 'insert') switchTab('insert');
+            else if (tabName === 'story') switchTab('story');
+        });
+    });
+    
+    // Search listener
+    const searchField = document.getElementById('searchInput');
+    if (searchField) {
+        searchField.addEventListener('input', () => {
+            if (document.getElementById('collectionPane').classList.contains('active-pane')) {
+                updateBookUI();
+            }
+        });
+    }
+    
+    // Handle insert form
+    const bookForm = document.getElementById('bookForm');
+    if (bookForm) {
+        bookForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const title = document.getElementById('title').value;
+            const purpose = document.getElementById('purpose').value;
+            const content = document.getElementById('content').value;
+            if (!title.trim()) {
+                alert("Please enter a book title!");
+                return;
+            }
+            addBook(title, purpose, content);
+            // reset form
+            document.getElementById('title').value = '';
+            document.getElementById('content').value = '';
+            document.getElementById('purpose').value = 'Study';
+            alert(`📚 "${title}" added to your collection!`);
+            // optional switch to collection tab to see new addition
+            switchTab('collection');
+            // force update search display
+            updateBookUI();
+        });
+    }
+    
+    // initial load
+    loadBooksFromStorage();
+    updateStoryPage();
+    
+    // extra check for initial noBooksMsg toggle
+    function initialMsgToggle() {
+        const grid = document.getElementById('booksGrid');
+        const noMsg = document.getElementById('noBooksMsg');
+        if (booksArray.length === 0 && grid && noMsg) {
+            grid.innerHTML = '';
+            noMsg.style.display = 'block';
+        } else if(noMsg) {
+            noMsg.style.display = 'none';
+        }
+    }
+    
+    // override updateBookUI to also handle message consistency
+    const originalUpdate = updateBookUI;
+    window.updateBookUI = function() {
+        originalUpdate();
+        const grid = document.getElementById('booksGrid');
+        const noMsg = document.getElementById('noBooksMsg');
+        if (booksArray.length === 0 && grid && noMsg && (!grid.children.length || grid.children.length === 0)) {
+            noMsg.style.display = 'block';
+        } else if (noMsg && booksArray.length > 0) {
+            noMsg.style.display = 'none';
+        }
+    };
+    updateBookUI = window.updateBookUI;
+    updateBookUI();
+    
+    // final init: ensure book count badge after potential delete
+    function refreshBadge() {
+        const badge = document.getElementById('bookCountBadge');
+        if (badge) badge.innerText = booksArray.length + (booksArray.length === 1 ? " book" : " books");
+    }
+    const origSave = saveBooksToStorage;
+    window.saveBooksToStorage = function() {
+        origSave();
+        refreshBadge();
+    };
+    saveBooksToStorage = window.saveBooksToStorage;
+    refreshBadge();
+</script>
+</body>
+</html>
