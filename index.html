@@ -154,7 +154,6 @@
             cursor: pointer;
         }
 
-        /* Storybook Reader */
         .story-reader-overlay {
             position: fixed;
             top: 0;
@@ -272,6 +271,23 @@
             margin-top: 2rem;
             opacity: 0.7;
         }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #333;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 48px;
+            z-index: 3000;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
     </style>
 </head>
 <body>
@@ -288,7 +304,7 @@
 
     <!-- Book Collection Tab -->
     <div id="collectionPane" class="tab-pane active-pane">
-        <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 1rem; flex-wrap: wrap; gap: 10px;">
             <h2>📚 Your Library <span class="badge" id="bookCountBadge">0 books</span></h2>
             <input type="text" id="searchInput" placeholder="🔍 search title..." style="width: 220px;">
         </div>
@@ -314,7 +330,7 @@
                         <small>Optional: upload an image for this page</small>
                     </div>
                 </div>
-                <button type="button" id="addPageBtn" style="background:#e0e7d6; margin:10px 0;">➕ Add Another Page</button>
+                <button type="button" id="addPageBtn" style="background:#e0e7d6; margin:10px 0; padding: 10px 20px; border-radius: 60px; border: none; cursor: pointer;">➕ Add Another Page</button>
                 <button type="submit" class="submit">🚀 Save Book to Firebase</button>
             </form>
             <p style="margin-top:1rem;">💡 Tip: Each book can have multiple pages. Images are stored in Firebase Storage.</p>
@@ -324,17 +340,19 @@
 </div>
 
 <script>
-    // -------------------- FIREBASE CONFIG --------------------
+    // ============================================
+    // 🔥 REPLACE THIS WITH YOUR FIREBASE CONFIG 🔥
+    // ============================================
     const firebaseConfig = {
-        apiKey: "AIzaSyBeR_1qofGMkOYXzBim94oyiALdFHlLzWU",
-        authDomain: "book-57e8b.firebaseapp.com",
-        projectId: "book-57e8b",
-        storageBucket: "book-57e8b.firebasestorage.app",
-        messagingSenderId: "340223330773",
-        appId: "1:340223330773:web:e6e9dd2a39d01cb526555c",
-        measurementId: "G-3HGH9H46HK"
-    };
+  apiKey: "AIzaSyB0sZrkMZCJcOvpFDHHlZC1Ou1gIRNmINg",
+  authDomain: "storybook-app-bb7c2.firebaseapp.com",
+  projectId: "storybook-app-bb7c2",
+  storageBucket: "storybook-app-bb7c2.firebasestorage.app",
+  messagingSenderId: "98186634318",
+  appId: "1:98186634318:web:66dd0fac096153af990f1f"
+};
     
+    // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
     const storage = firebase.storage();
@@ -343,80 +361,119 @@
     // Global books array
     let allBooks = [];
     
-    // -------------------- PANDA & SQUIRREL STORY (10 Pages with unique images) --------------------
-    // Predefined Panda & Squirrel story with 10 pages - each has text & an emoji/fallback (but will also store image URLs optionally)
-    // We'll store this story permanently in Firebase if not exists.
-    const pandaSquirrelPages = [
-        { text: "In the heart of the Whispering Woods, where trees hummed melodies, lived Pablo the Panda and Squeaky the Squirrel. They were the best of friends, sharing breakfast under the Great Oak Tree every morning. Their friendship was known as the strongest bond in the entire forest.", imageUrl: "https://placehold.co/400x200/FFE0B5/8B5A2B?text=🐼+🐿️+Forest" },
-        { text: "One sunny afternoon, Squeaky found a trail of glowing paw prints. 'Pablo, look!' Pablo sniffed the prints. 'They smell like stardust!' The duo decided to follow the mysterious trail into the unknown depths of the woods.", imageUrl: "https://placehold.co/400x200/F5E6CC/8B5A2B?text=✨+Glowing+Pawprints" },
-        { text: "The trail led them to an ancient hollow tree with a tiny door. An old owl named Professor Hoot greeted them. 'You have been chosen to find the legendary Friendship Gem. Without it, the forest will lose its magic in three days.'", imageUrl: "https://placehold.co/400x200/D4E6B0/3A5C1E?text=🦉+Professor+Hoot" },
-        { text: "Professor Hoot gave them a map with three riddles. The first riddle: 'I have a crown but no king. I am green but have no wings.' Squeaky shouted, 'A tree!' The map shimmered and revealed the path to Mushroom Circle.", imageUrl: "https://placehold.co/400x200/FFD966/6B3E1A?text=🍄+Mushroom+Circle" },
-        { text: "At Mushroom Circle, glowing mushrooms lit the night. The second riddle: 'We are two, yet we are one; when we share, we have more fun.' Together they answered: 'Best friends!' A golden compass appeared, pointing toward Sparkling River.", imageUrl: "https://placehold.co/400x200/EDC9A0/5D3A1A?text=🧭+Golden+Compass" },
-        { text: "The Sparkling River rushed wildly. Squeaky couldn't swim, but Pablo said, 'Climb on my back!' The panda waded across while the squirrel held tight. The river sparkled brighter, celebrating their teamwork.", imageUrl: "https://placehold.co/400x200/9AD0EA/2C5280?text=🌊+Crossing+the+River" },
-        { text: "They entered a crystal cave. The final riddle: 'What grows stronger when given away?' They shouted: 'Love! Friendship!' The Friendship Gem appeared — a heart-shaped crystal glowing with warmth.", imageUrl: "https://placehold.co/400x200/F4C2C2/8B0000?text=💎+Friendship+Gem" },
-        { text: "Professor Hoot declared them guardians of the gem. The forest bloomed with glowing flowers and singing birds. All animals celebrated Pablo and Squeaky's bravery and loyalty.", imageUrl: "https://placehold.co/400x200/FFB347/7A4C1C?text=🎉+Forest+Celebration" },
-        { text: "Back at the Great Oak Tree, Pablo and Squeaky promised to always help each other. 'With you, every adventure feels like a hug,' Squeaky said. The stars twinkled above them.", imageUrl: "https://placehold.co/400x200/FFD700/4A3728?text=🌙+Starry+Promise" },
-        { text: "And so, the legend of Panda & Squirrel was told for generations. True friendship is the greatest treasure of all. The End (or just the beginning!).", imageUrl: "https://placehold.co/400x200/E0BBE4/4A235A?text=📖+Happily+Ever+After" }
-    ];
-    
-    // Function to upload image to Firebase Storage and return URL
-    async function uploadImage(file, bookId, pageIndex) {
-        if (!file) return null;
-        const storageRef = storage.ref();
-        const imageRef = storageRef.child(`books/${bookId}/page_${pageIndex}_${Date.now()}.jpg`);
-        await imageRef.put(file);
-        return await imageRef.getDownloadURL();
+    // Helper: Show toast notification
+    function showToast(message, isError = false) {
+        const toast = document.createElement('div');
+        toast.className = 'toast';
+        toast.textContent = message;
+        toast.style.background = isError ? '#c62828' : '#2e7d32';
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 3000);
     }
     
-    // Save a new book (with pages and images)
-    async function saveBookToFirebase(bookData) {
+    // Panda & Squirrel 10-Page Story with image URLs (using free placeholder images)
+    const pandaSquirrelPages = [
+        { text: "In the heart of the Whispering Woods, where trees hummed melodies, lived Pablo the Panda and Squeaky the Squirrel. They were the best of friends, sharing breakfast under the Great Oak Tree every morning. Their friendship was known as the strongest bond in the entire forest.", imageUrl: "https://picsum.photos/id/104/400/250" },
+        { text: "One sunny afternoon, Squeaky found a trail of glowing paw prints. 'Pablo, look!' Pablo sniffed the prints. 'They smell like stardust!' The duo decided to follow the mysterious trail into the unknown depths of the woods.", imageUrl: "https://picsum.photos/id/96/400/250" },
+        { text: "The trail led them to an ancient hollow tree with a tiny door. An old owl named Professor Hoot greeted them. 'You have been chosen to find the legendary Friendship Gem. Without it, the forest will lose its magic in three days.'", imageUrl: "https://picsum.photos/id/13/400/250" },
+        { text: "Professor Hoot gave them a map with three riddles. The first riddle: 'I have a crown but no king. I am green but have no wings.' Squeaky shouted, 'A tree!' The map shimmered and revealed the path to Mushroom Circle.", imageUrl: "https://picsum.photos/id/94/400/250" },
+        { text: "At Mushroom Circle, glowing mushrooms lit the night. The second riddle: 'We are two, yet we are one; when we share, we have more fun.' Together they answered: 'Best friends!' A golden compass appeared, pointing toward Sparkling River.", imageUrl: "https://picsum.photos/id/29/400/250" },
+        { text: "The Sparkling River rushed wildly. Squeaky couldn't swim, but Pablo said, 'Climb on my back!' The panda waded across while the squirrel held tight. The river sparkled brighter, celebrating their teamwork.", imageUrl: "https://picsum.photos/id/143/400/250" },
+        { text: "They entered a crystal cave. The final riddle: 'What grows stronger when given away?' They shouted: 'Love! Friendship!' The Friendship Gem appeared — a heart-shaped crystal glowing with warmth.", imageUrl: "https://picsum.photos/id/20/400/250" },
+        { text: "Professor Hoot declared them guardians of the gem. The forest bloomed with glowing flowers and singing birds. All animals celebrated Pablo and Squeaky's bravery and loyalty.", imageUrl: "https://picsum.photos/id/16/400/250" },
+        { text: "Back at the Great Oak Tree, Pablo and Squeaky promised to always help each other. 'With you, every adventure feels like a hug,' Squeaky said. The stars twinkled above them.", imageUrl: "https://picsum.photos/id/91/400/250" },
+        { text: "And so, the legend of Panda & Squirrel was told for generations. True friendship is the greatest treasure of all. The End (or just the beginning!).", imageUrl: "https://picsum.photos/id/42/400/250" }
+    ];
+    
+    // Upload image to Firebase Storage
+    async function uploadImage(file, bookId, pageIndex) {
+        if (!file) return null;
+        try {
+            const storageRef = storage.ref();
+            const fileExt = file.name.split('.').pop();
+            const fileName = `page_${pageIndex}_${Date.now()}.${fileExt}`;
+            const imageRef = storageRef.child(`books/${bookId}/${fileName}`);
+            await imageRef.put(file);
+            return await imageRef.getDownloadURL();
+        } catch (error) {
+            console.error("Image upload error:", error);
+            showToast("Image upload failed: " + error.message, true);
+            return null;
+        }
+    }
+    
+    // Save a new book with pages
+    async function saveBookToFirebase(title, purpose, pagesData) {
         const docRef = await booksCollection.add({
-            title: bookData.title,
-            purpose: bookData.purpose,
+            title: title,
+            purpose: purpose,
             createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-            pages: bookData.pages // array of { text, imageUrl (optional) }
+            pages: pagesData
         });
         return docRef.id;
     }
     
     // Load all books from Firestore
     async function loadBooksFromFirebase() {
-        const snapshot = await booksCollection.orderBy("createdAt", "desc").get();
-        allBooks = [];
-        snapshot.forEach(doc => {
-            allBooks.push({ id: doc.id, ...doc.data() });
-        });
-        updateBookUI();
-        return allBooks;
+        try {
+            const snapshot = await booksCollection.orderBy("createdAt", "desc").get();
+            allBooks = [];
+            snapshot.forEach(doc => {
+                allBooks.push({ id: doc.id, ...doc.data() });
+            });
+            updateBookUI();
+            return allBooks;
+        } catch (error) {
+            console.error("Error loading books:", error);
+            showToast("Error loading books: " + error.message, true);
+            return [];
+        }
     }
     
-    // Delete book and its images from storage
+    // Delete book and its images
     async function deleteBook(bookId, pages) {
-        // Delete images from storage if they exist
-        for (let i = 0; i < pages.length; i++) {
-            const page = pages[i];
-            if (page.imageUrl && page.imageUrl.includes("firebasestorage.googleapis.com")) {
-                try {
-                    const imageRef = storage.refFromURL(page.imageUrl);
-                    await imageRef.delete();
-                } catch(e) { console.log("Image delete failed", e); }
+        try {
+            // Delete images from storage
+            for (let i = 0; i < pages.length; i++) {
+                const page = pages[i];
+                if (page.imageUrl && page.imageUrl.includes("firebasestorage.googleapis.com")) {
+                    try {
+                        const imageRef = storage.refFromURL(page.imageUrl);
+                        await imageRef.delete();
+                    } catch(e) { console.log("Could not delete image", e); }
+                }
             }
+            await booksCollection.doc(bookId).delete();
+            showToast("Book deleted successfully!");
+            await loadBooksFromFirebase();
+        } catch (error) {
+            console.error("Delete error:", error);
+            showToast("Error deleting book: " + error.message, true);
         }
-        await booksCollection.doc(bookId).delete();
-        loadBooksFromFirebase();
+    }
+    
+    // Escape HTML to prevent XSS
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        });
     }
     
     // Render book cards
     function updateBookUI() {
         const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-        const filtered = allBooks.filter(book => book.title.toLowerCase().includes(searchTerm));
+        const filtered = allBooks.filter(book => book.title && book.title.toLowerCase().includes(searchTerm));
         const grid = document.getElementById('booksGrid');
         const noMsg = document.getElementById('noBooksMsg');
         
         if (filtered.length === 0) {
             grid.innerHTML = '';
             noMsg.style.display = 'block';
-            noMsg.innerText = '📭 No books found. Add one or wait for Panda story to load.';
+            noMsg.innerText = '📭 No books found. Add a new book or wait for the Panda story to load.';
         } else {
             noMsg.style.display = 'none';
             grid.innerHTML = '';
@@ -424,21 +481,24 @@
                 const card = document.createElement('div');
                 card.className = 'book-card';
                 const pageCount = book.pages ? book.pages.length : 0;
+                const previewText = book.pages && book.pages[0] ? (book.pages[0].text.substring(0, 60) + '...') : 'No pages yet';
                 card.innerHTML = `
                     <div class="book-title">${escapeHtml(book.title)}</div>
                     <div class="book-purpose">${escapeHtml(book.purpose)} | ${pageCount} pages</div>
-                    <div class="book-content" style="font-size:0.8rem;">📖 ${pageCount} page${pageCount !== 1 ? 's' : ''} of adventure</div>
+                    <div class="book-content" style="font-size:0.8rem; color:#666;">📖 ${previewText}</div>
                     <button class="read-btn" data-id="${book.id}">📖 Read Storybook</button>
                     <button class="delete-btn" data-id="${book.id}">🗑️ Delete</button>
                 `;
                 grid.appendChild(card);
             });
             
+            // Attach event listeners
             document.querySelectorAll('.read-btn').forEach(btn => {
-                btn.addEventListener('click', async (e) => {
+                btn.addEventListener('click', (e) => {
                     const id = btn.getAttribute('data-id');
                     const book = allBooks.find(b => b.id === id);
-                    if (book) openStorybookReader(book.title, book.pages || []);
+                    if (book && book.pages) openStorybookReader(book.title, book.pages);
+                    else showToast("This book has no pages!", true);
                 });
             });
             
@@ -455,22 +515,12 @@
         document.getElementById('bookCountBadge').innerText = `${allBooks.length} book${allBooks.length !== 1 ? 's' : ''}`;
     }
     
-    function escapeHtml(str) {
-        if(!str) return '';
-        return str.replace(/[&<>]/g, function(m) {
-            if(m === '&') return '&amp;';
-            if(m === '<') return '&lt;';
-            if(m === '>') return '&gt;';
-            return m;
-        });
-    }
-    
-    // ---------- STORYBOOK READER (Supports pages with images) ----------
+    // Storybook Reader with image support
     function openStorybookReader(title, pagesArray) {
         let currentPage = 0;
         const totalPages = pagesArray.length;
         if (totalPages === 0) {
-            alert("This book has no pages yet.");
+            showToast("This book has no pages yet.", true);
             return;
         }
         
@@ -517,22 +567,19 @@
             const page = pagesArray[currentPage];
             textDiv.innerHTML = (page.text || "").replace(/\n/g, '<br>');
             if (page.imageUrl && page.imageUrl.trim()) {
-                illustrationDiv.innerHTML = `<img src="${page.imageUrl}" alt="page illustration" style="max-width:100%; max-height:220px; border-radius:32px;">`;
+                illustrationDiv.innerHTML = `<img src="${page.imageUrl}" alt="page illustration" style="max-width:100%; max-height:220px; border-radius:32px;" onerror="this.style.display='none'; this.nextSibling.style.display='block'">`;
             } else {
-                illustrationDiv.innerHTML = getEmojiFromText(page.text || "");
+                const emojiMap = { panda: '🐼', squirrel: '🐿️', friendship: '💎', forest: '🌳' };
+                let emoji = '📖';
+                const lowerText = (page.text || "").toLowerCase();
+                if (lowerText.includes('panda')) emoji = '🐼';
+                else if (lowerText.includes('squirrel')) emoji = '🐿️';
+                else if (lowerText.includes('friendship')) emoji = '💎';
+                illustrationDiv.innerHTML = `<div style="font-size:4rem;">${emoji}</div>`;
             }
             pageIndicator.innerText = `Page ${currentPage+1} of ${totalPages}`;
             prevBtn.disabled = (currentPage === 0);
             nextBtn.disabled = (currentPage === totalPages-1);
-        }
-        
-        function getEmojiFromText(txt) {
-            const lower = txt.toLowerCase();
-            if (lower.includes('panda')) return '🐼🎋';
-            if (lower.includes('squirrel')) return '🐿️🌰';
-            if (lower.includes('friendship')) return '💎💖';
-            if (lower.includes('forest')) return '🌳✨';
-            return '📖🌟';
         }
         
         function nextPage() { if (currentPage < totalPages-1) { currentPage++; updatePage(); } }
@@ -546,8 +593,9 @@
         updatePage();
     }
     
-    // ---------- Insert Book with dynamic pages + image upload ----------
+    // ---------- Insert Book Form Handling ----------
     let pageCounter = 1;
+    
     document.getElementById('addPageBtn').addEventListener('click', () => {
         pageCounter++;
         const container = document.getElementById('pagesContainer');
@@ -562,7 +610,7 @@
             <textarea placeholder="Page text..." class="page-text" rows="2" required></textarea>
             <input type="file" class="page-image" accept="image/*">
             <small>Optional image</small>
-            <button type="button" class="remove-page" style="background:#e9e0c7; margin-top:8px;">Remove page</button>
+            <button type="button" class="remove-page" style="background:#e9e0c7; margin-top:8px; padding:6px 12px; border-radius:30px; border:none; cursor:pointer;">Remove page</button>
         `;
         newGroup.querySelector('.remove-page').addEventListener('click', () => newGroup.remove());
         container.appendChild(newGroup);
@@ -572,7 +620,7 @@
         e.preventDefault();
         const title = document.getElementById('bookTitle').value.trim();
         const purpose = document.getElementById('bookPurpose').value;
-        if (!title) { alert("Please enter a title"); return; }
+        if (!title) { showToast("Please enter a title", true); return; }
         
         const pageGroups = document.querySelectorAll('.page-input-group');
         const pagesData = [];
@@ -580,84 +628,93 @@
             const group = pageGroups[i];
             const text = group.querySelector('.page-text').value.trim();
             if (!text) {
-                alert(`Page ${i+1} has no text. Please fill or remove it.`);
+                showToast(`Page ${i+1} has no text. Please fill or remove it.`, true);
                 return;
             }
             pagesData.push({ text: text, imageFile: group.querySelector('.page-image').files[0] });
         }
-        if (pagesData.length === 0) { alert("Add at least one page"); return; }
+        if (pagesData.length === 0) { showToast("Add at least one page", true); return; }
         
-        // Show loading
         const submitBtn = e.target.querySelector('button[type="submit"]');
         const originalText = submitBtn.innerText;
-        submitBtn.innerText = "Uploading...";
+        submitBtn.innerText = "📤 Uploading...";
         submitBtn.disabled = true;
         
-        // First create book doc to get ID
-        const tempRef = await booksCollection.add({
-            title: title,
-            purpose: purpose,
-            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-            pages: [] // temporary
-        });
-        const bookId = tempRef.id;
-        
-        // Upload images and build final pages array
-        const finalPages = [];
-        for (let i = 0; i < pagesData.length; i++) {
-            const page = pagesData[i];
-            let imageUrl = null;
-            if (page.imageFile) {
-                try {
-                    const storageRef = storage.ref();
-                    const fileRef = storageRef.child(`books/${bookId}/page_${i}_${Date.now()}.jpg`);
-                    await fileRef.put(page.imageFile);
-                    imageUrl = await fileRef.getDownloadURL();
-                } catch(err) { console.warn("Image upload failed", err); }
+        try {
+            // Create temporary book to get ID for image uploads
+            const tempRef = await booksCollection.add({
+                title: title,
+                purpose: purpose,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                pages: []
+            });
+            const bookId = tempRef.id;
+            
+            // Upload images and build final pages
+            const finalPages = [];
+            for (let i = 0; i < pagesData.length; i++) {
+                const page = pagesData[i];
+                let imageUrl = null;
+                if (page.imageFile) {
+                    imageUrl = await uploadImage(page.imageFile, bookId, i);
+                }
+                finalPages.push({ text: page.text, imageUrl: imageUrl });
             }
-            finalPages.push({ text: page.text, imageUrl: imageUrl || null });
+            
+            // Update book with pages
+            await booksCollection.doc(bookId).update({ pages: finalPages });
+            showToast(`✅ "${title}" saved with ${finalPages.length} pages!`);
+            
+            // Reset form
+            document.getElementById('bookForm').reset();
+            document.getElementById('pagesContainer').innerHTML = `
+                <div class="page-input-group" style="border:1px solid #dcedbc; border-radius:32px; padding:1rem; margin:1rem 0;">
+                    <h4>Page 1</h4>
+                    <textarea placeholder="Page text..." class="page-text" rows="2" required></textarea>
+                    <input type="file" class="page-image" accept="image/*">
+                    <small>Optional image</small>
+                </div>
+            `;
+            pageCounter = 1;
+            await loadBooksFromFirebase();
+            
+            // Switch to collection tab
+            document.querySelector('[data-tab="collection"]').click();
+        } catch (error) {
+            console.error("Save error:", error);
+            showToast("Error saving book: " + error.message, true);
+        } finally {
+            submitBtn.innerText = originalText;
+            submitBtn.disabled = false;
         }
-        
-        // Update the book document with pages
-        await booksCollection.doc(bookId).update({ pages: finalPages });
-        alert(`✅ "${title}" saved with ${finalPages.length} pages!`);
-        submitBtn.innerText = originalText;
-        submitBtn.disabled = false;
-        document.getElementById('bookForm').reset();
-        document.getElementById('pagesContainer').innerHTML = `
-            <div class="page-input-group" style="border:1px solid #dcedbc; border-radius:32px; padding:1rem; margin:1rem 0;">
-                <h4>Page 1</h4>
-                <textarea placeholder="Page text..." class="page-text" rows="2" required></textarea>
-                <input type="file" class="page-image" accept="image/*">
-                <small>Optional image</small>
-            </div>
-        `;
-        pageCounter = 1;
-        loadBooksFromFirebase();
-        // Switch to collection tab
-        document.querySelector('[data-tab="collection"]').click();
     });
     
-    // ---------- Preload Panda & Squirrel story if not exists ----------
+    // Preload Panda & Squirrel story if it doesn't exist
     async function preloadPandaSquirrelStory() {
-        const existing = await booksCollection.where("title", "==", "🐼🐿️ Panda & Squirrel: The Friendship Gem").get();
-        if (existing.empty) {
-            // Save the 10-page story to Firebase
-            const pagesToStore = pandaSquirrelPages.map(p => ({ text: p.text, imageUrl: p.imageUrl }));
-            await booksCollection.add({
-                title: "🐼🐿️ Panda & Squirrel: The Friendship Gem",
-                purpose: "General",
-                createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                pages: pagesToStore
-            });
-            console.log("✅ Preloaded Panda & Squirrel 10-page story into Firebase");
-        } else {
-            console.log("🐼 Panda story already exists in database");
+        try {
+            const existing = await booksCollection.where("title", "==", "🐼🐿️ Panda & Squirrel: The Friendship Gem").get();
+            if (existing.empty) {
+                const pagesToStore = pandaSquirrelPages.map(p => ({ text: p.text, imageUrl: p.imageUrl }));
+                await booksCollection.add({
+                    title: "🐼🐿️ Panda & Squirrel: The Friendship Gem",
+                    purpose: "General",
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    pages: pagesToStore
+                });
+                console.log("✅ Preloaded Panda & Squirrel 10-page story");
+                showToast("📚 Panda & Squirrel story preloaded!");
+            } else {
+                console.log("🐼 Panda story already exists");
+            }
+            await loadBooksFromFirebase();
+        } catch (error) {
+            console.error("Preload error:", error);
+            // Still try to load books
+            await loadBooksFromFirebase();
         }
-        await loadBooksFromFirebase();
     }
     
-    // Tabs logic
+    // Tab switching logic
     document.querySelectorAll('.tab-btn').forEach(btn => {
         btn.addEventListener('click', () => {
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -669,9 +726,10 @@
         });
     });
     
+    // Search input listener
     document.getElementById('searchInput').addEventListener('input', () => updateBookUI());
     
-    // Start
+    // Initialize app
     preloadPandaSquirrelStory();
 </script>
 </body>
